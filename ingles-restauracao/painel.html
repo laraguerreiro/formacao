@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel · Inglês na Restauração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito+Sans:wght@400;700&display=swap">
+<style>
+/* Painel da formadora: resumo em cima, turma no meio, detalhe por baixo */
+:root {
+  --bg: #FBF6EE; --card: #FFFFFF; --soft: #F2E8D9; --line: #E3D5C1;
+  --fg: #2B2420; --muted: #6B5D52; --accent: #A8461F; --accent-fg: #FBF6EE;
+  --ok: #2F7A4B; --ok-bg: #E3F1E7; --warn: #8A5A00; --warn-bg: #FBEFD2; --bad: #B23A2A; --bad-bg: #F8E1DC;
+  --display: 'Fredoka', 'Trebuchet MS', Arial, sans-serif;
+  --body: 'Nunito Sans', Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1E1A17; --card: #2A2420; --soft: #352D27; --line: #4A3F37;
+    --fg: #F3EAE0; --muted: #BFAE9F; --accent: #E58A5C; --accent-fg: #1E1A17;
+    --ok: #7FCB97; --ok-bg: #213A2A; --warn: #E8C26A; --warn-bg: #3D321A; --bad: #F08E7E; --bad-bg: #432421;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: max(24px, env(safe-area-inset-top, 0px)) max(40px, env(safe-area-inset-bottom, 0px));
+}
+.wrap { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; line-height: 1.2; text-wrap: balance; }
+h1 { font-size: 30px; } h2 { font-size: 22px; } h3 { font-size: 18px; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+button { font: inherit; cursor: pointer; }
+.btn { font-weight: 700; padding: 10px 16px; border-radius: 10px; border: 2px solid var(--accent); background: var(--accent); color: var(--accent-fg); }
+.btn.secondary { background: transparent; color: var(--accent); }
+.btn:focus-visible, input:focus-visible, tr.click:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+input[type=password], input[type=search] { font: inherit; padding: 10px 12px; border-radius: 10px; border: 2px solid var(--line); background: var(--bg); color: var(--fg); min-width: 0; }
+.login { max-width: 420px; }
+.msg { padding: 10px 14px; border-radius: 10px; font-weight: 700; }
+.msg.bad { background: var(--bad-bg); color: var(--bad); }
+.demo { background: var(--warn-bg); color: var(--warn); border-radius: 10px; padding: 10px 14px; font-weight: 700; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 2px; }
+.tile b { font-family: var(--display); font-size: 34px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.tile span { color: var(--muted); font-size: 14px; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.click { cursor: pointer; }
+tr.click:hover td, tr.sel td { background: var(--soft); }
+.pill { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 13px; font-weight: 700; }
+.p-none { background: var(--soft); color: var(--muted); }
+.p-run { background: var(--warn-bg); color: var(--warn); }
+.p-ok { background: var(--ok-bg); color: var(--ok); }
+.p-done { background: var(--bad-bg); color: var(--bad); }
+.qlist { display: flex; flex-direction: column; gap: 10px; }
+.qrow { display: grid; grid-template-columns: 44px 1fr 120px 52px; gap: 12px; align-items: center; }
+.qrow .t { min-width: 0; font-size: 15px; }
+.qrow .t small { display: block; color: var(--muted); }
+.qbar { height: 10px; background: var(--soft); border-radius: 99px; overflow: hidden; }
+.qbar i { display: block; height: 100%; background: var(--ok); }
+.qbar i.low { background: var(--bad); }
+.qrow .pct { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.qrow .n { font-weight: 700; color: var(--muted); }
+.ans { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.a { border-radius: 10px; padding: 8px 10px; font-size: 14px; }
+.a.y { background: var(--ok-bg); } .a.n { background: var(--bad-bg); }
+.a b { display: block; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } .qrow { grid-template-columns: 36px 1fr 60px 44px; } }
+[hidden] { display: none !important; }
+</style>
+<script src="config.js"></script>
+<script src="perguntas.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow">Painel da formadora</p>
+      <h1>Inglês na Restauração</h1>
+    </div>
+    <div class="tools" id="tools" hidden>
+      <span class="muted" id="updated"></span>
+      <button class="btn secondary" id="b-refresh">Atualizar</button>
+      <button class="btn secondary" id="b-exit">Sair</button>
+    </div>
+  </header>
+
+  <form class="card login" id="f-login" novalidate>
+    <h2>Entrar</h2>
+    <label for="pw"><b>Palavra-passe do painel</b></label>
+    <input type="password" id="pw" autocomplete="current-password">
+    <p class="msg bad" id="login-err" hidden></p>
+    <button class="btn" type="submit" id="b-login">Ver resultados</button>
+  </form>
+
+  <div id="dash" hidden style="display:flex;flex-direction:column;gap:24px">
+    <p class="demo" id="demo" hidden>Dados de exemplo (modo de demonstração). Ligue a página à Google Sheet para ver os resultados reais.</p>
+    <div class="tiles" id="tiles"></div>
+
+    <section class="card">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+        <h2>Formandos</h2>
+        <input type="search" id="search" placeholder="Procurar nome ou código" aria-label="Procurar formando">
+      </div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Nome</th><th>Código</th><th>Estado</th><th class="num">Tentativas</th><th class="num">1.ª</th><th class="num">2.ª</th><th class="num">Melhor</th><th>Último acesso</th></tr></thead>
+          <tbody id="t-students"></tbody>
+        </table>
+      </div>
+      <p class="muted" style="font-size:14px">Clique num formando para ver as respostas.</p>
+    </section>
+
+    <section class="card" id="detail" hidden>
+      <h2 id="d-title"></h2>
+      <div id="d-body" style="display:flex;flex-direction:column;gap:18px"></div>
+    </section>
+
+    <div class="grid2">
+      <section class="card">
+        <h2>Acerto por pergunta</h2>
+        <p class="muted" style="font-size:14px">Tentativas concluídas. As perguntas com menos acertos aparecem primeiro.</p>
+        <div class="qlist" id="qlist"></div>
+      </section>
+      <section class="card">
+        <h2>Acessos recentes</h2>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Quando</th><th>Formando</th><th>Evento</th></tr></thead>
+            <tbody id="t-log"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const Q = window.QUIZ, API = (window.API_URL || "").trim(), MAX = Q.tentativasMax;
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const fmt = (iso) => { if (!iso) return "—"; const d = new Date(iso); return isNaN(d) ? String(iso) : d.toLocaleString("pt-PT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }); };
+  let DATA = null, selected = null;
+
+  async function load(pw) {
+    if (!API) return demoData();
+    const res = await fetch(API, { method: "POST", body: JSON.stringify({ action: "results", password: pw }) });
+    return res.json();
+  }
+
+  $("f-login").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const pw = $("pw").value, err = $("login-err"); err.hidden = true;
+    $("b-login").disabled = true; $("b-login").textContent = "A carregar…";
+    try {
+      const r = await load(pw);
+      if (!r.ok) { err.textContent = r.error === "palavra_passe" ? "Palavra-passe errada." : "Não foi possível carregar os resultados."; err.hidden = false; return; }
+      try { sessionStorage.setItem("ir_pw", pw); } catch (e) {}
+      DATA = r; render();
+    } catch (e) { err.textContent = "Não foi possível ligar à Google Sheet. Verifique a internet e o endereço em config.js."; err.hidden = false; }
+    finally { $("b-login").disabled = false; $("b-login").textContent = "Ver resultados"; }
+  });
+
+  $("b-refresh").addEventListener("click", async () => {
+    let pw = ""; try { pw = sessionStorage.getItem("ir_pw") || ""; } catch (e) {}
+    $("b-refresh").disabled = true;
+    try { const r = await load(pw); if (r.ok) { DATA = r; render(); } } catch (e) {}
+    $("b-refresh").disabled = false;
+  });
+  $("b-exit").addEventListener("click", () => { try { sessionStorage.removeItem("ir_pw"); } catch (e) {} location.reload(); });
+  $("search").addEventListener("input", renderStudents);
+
+  function summarize() {
+    const lastSeen = {};
+    DATA.acessos.forEach((a) => { const c = String(a.code).toUpperCase(); if (!lastSeen[c] || a.quando > lastSeen[c]) lastSeen[c] = a.quando; });
+    return DATA.formandos.map((f) => {
+      const ts = DATA.tentativas.filter((t) => t.code === f.code).sort((a, b) => a.number - b.number);
+      const done = ts.filter((t) => t.estado === "concluída");
+      const notes = done.map((t) => Number(t.nota));
+      const best = notes.length ? Math.max.apply(null, notes) : null;
+      let estado = "Não começou", cls = "p-none";
+      if (ts.some((t) => t.estado === "em curso")) { estado = "Em curso"; cls = "p-run"; }
+      else if (done.length >= MAX) { estado = "Concluiu as 2"; cls = "p-ok"; }
+      else if (done.length) { estado = "Concluiu 1"; cls = "p-ok"; }
+      else if (lastSeen[f.code]) { estado = "Entrou"; cls = "p-none"; }
+      const nota = (n) => { const t = ts.find((x) => x.number === n); return !t ? "—" : t.estado === "concluída" ? t.nota + "%" : "em curso"; };
+      return { f, ts, done, best, estado, cls, n1: nota(1), n2: nota(2), last: lastSeen[f.code] };
+    });
+  }
+
+  function render() {
+    $("f-login").hidden = true; $("dash").hidden = false; $("tools").hidden = false;
+    $("demo").hidden = !!API;
+    $("updated").textContent = "Atualizado " + new Date().toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
+    const S = summarize();
+    const entered = S.filter((s) => s.last).length;
+    const finished = S.filter((s) => s.done.length).length;
+    const bests = S.filter((s) => s.best !== null).map((s) => s.best);
+    const avg = bests.length ? Math.round(bests.reduce((a, b) => a + b, 0) / bests.length) : null;
+    const running = S.filter((s) => s.estado === "Em curso").length;
+    const tiles = $("tiles"); tiles.innerHTML = "";
+    [[S.length, "formandos inscritos"], [entered, "já entraram"], [finished, "concluíram o teste"], [avg === null ? "—" : avg + "%", "média da melhor nota"], [running, "tentativas em curso"]]
+      .forEach(([v, l]) => { const t = el("div", "tile"); t.append(el("b", null, v), el("span", null, l)); tiles.append(t); });
+    renderStudents(); renderQuestions(); renderLog();
+    if (selected) renderDetail(selected);
+  }
+
+  function renderStudents() {
+    const q = $("search").value.trim().toLowerCase();
+    const tb = $("t-students"); tb.innerHTML = "";
+    const rows = summarize().filter((s) => !q || s.f.name.toLowerCase().includes(q) || s.f.code.toLowerCase().includes(q));
+    if (!rows.length) { const tr = el("tr"); const td = el("td", "muted", "Nenhum formando encontrado. Acrescente formandos na folha Formandos."); td.colSpan = 8; tr.append(td); tb.append(tr); return; }
+    rows.forEach((s) => {
+      const tr = el("tr", "click" + (selected === s.f.code ? " sel" : "")); tr.tabIndex = 0;
+      const st = el("td"); st.append(el("span", "pill " + s.cls, s.estado));
+      tr.append(el("td", null, s.f.name), el("td", null, s.f.code), st, el("td", "num", s.ts.length + "/" + MAX), el("td", "num", s.n1), el("td", "num", s.n2), el("td", "num", s.best === null ? "—" : s.best + "%"), el("td", null, fmt(s.last)));
+      const open = () => { selected = s.f.code; renderStudents(); renderDetail(s.f.code); $("detail").scrollIntoView({ behavior: "smooth", block: "start" }); };
+      tr.addEventListener("click", open);
+      tr.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+      tb.append(tr);
+    });
+  }
+
+  function renderDetail(code) {
+    const s = summarize().find((x) => x.f.code === code); if (!s) return;
+    $("detail").hidden = false;
+    $("d-title").textContent = s.f.name + " · " + s.f.code;
+    const body = $("d-body"); body.innerHTML = "";
+    if (!s.ts.length) { body.append(el("p", "muted", "Ainda não começou nenhuma tentativa.")); return; }
+    s.ts.forEach((t) => {
+      const box = el("div"); box.style.cssText = "display:flex;flex-direction:column;gap:10px";
+      const head = t.estado === "concluída"
+        ? "Tentativa " + t.number + " · " + t.certas + "/" + t.total + " (" + t.nota + "%) · " + fmt(t.inicio) + " · " + t.duracao + " min"
+        : "Tentativa " + t.number + " · em curso desde " + fmt(t.inicio);
+      box.append(el("h3", null, head));
+      if (t.estado === "concluída") {
+        const g = el("div", "ans");
+        Q.perguntas.forEach((q, i) => {
+          const raw = String(t.respostas[i] || "");
+          const ok = raw.charAt(0) === "✓";
+          const a = el("div", "a " + (ok ? "y" : "n"));
+          a.append(el("b", null, (i + 1) + ". " + (ok ? "Certa" : "Errada")), el("span", null, raw.replace(/^[✓✗]\s*/, "") || "—"));
+          g.append(a);
+        });
+        box.append(g);
+      }
+      body.append(box);
+    });
+  }
+
+  function renderQuestions() {
+    const done = DATA.tentativas.filter((t) => t.estado === "concluída");
+    const list = $("qlist"); list.innerHTML = "";
+    if (!done.length) { list.append(el("p", "muted", "Ainda não há tentativas concluídas.")); return; }
+    const stats = Q.perguntas.map((q, i) => {
+      const ok = done.filter((t) => String(t.respostas[i] || "").charAt(0) === "✓").length;
+      return { i, q, pct: Math.round(ok / done.length * 100) };
+    }).sort((a, b) => a.pct - b.pct);
+    stats.forEach((s) => {
+      const r = el("div", "qrow");
+      const t = el("div", "t"); t.append(el("span", null, s.q.enunciado + (s.q.ingles ? " “" + s.q.ingles + "”" : "")), el("small", null, "Momento " + s.q.m + " · certa: " + s.q.opcoes[0]));
+      const bar = el("div", "qbar"); const fill = el("i", s.pct < 50 ? "low" : ""); fill.style.width = s.pct + "%"; bar.append(fill);
+      r.append(el("span", "n", "P" + (s.i + 1)), t, bar, el("span", "pct", s.pct + "%"));
+      list.append(r);
+    });
+  }
+
+  function renderLog() {
+    const tb = $("t-log"); tb.innerHTML = "";
+    const rows = DATA.acessos.slice(0, 50);
+    if (!rows.length) { const tr = el("tr"); const td = el("td", "muted", "Ainda não há acessos."); td.colSpan = 3; tr.append(td); tb.append(tr); return; }
+    rows.forEach((a) => {
+      const tr = el("tr");
+      tr.append(el("td", null, fmt(a.quando)), el("td", null, (a.name || "—") + " (" + a.code + ")"), el("td", null, a.evento + (a.tentativa ? " · tentativa " + a.tentativa : "")));
+      tb.append(tr);
+    });
+  }
+
+  /* Dados de exemplo para o modo de demonstração (não são formandos reais) */
+  function demoData() {
+    const names = [["1001", "Formando Exemplo A"], ["1002", "Formando Exemplo B"], ["1003", "Formando Exemplo C"], ["1004", "Formando Exemplo D"]];
+    const now = Date.now(), iso = (h) => new Date(now - h * 3600e3).toISOString();
+    const ans = (pattern) => Q.perguntas.map((q, i) => (pattern[i] === "1" ? "✓ " + q.opcoes[0] : "✗ " + q.opcoes[1]) + " (9s)");
+    const p1 = "11111011101101110111", p2 = "11111111111101111111", p3 = "11011010100101010110";
+    const cnt = (p) => p.split("").filter((c) => c === "1").length;
+    const att = (code, name, n, p, h) => ({ code, name, number: n, inicio: iso(h), fim: iso(h - 0.3), duracao: 14.5, estado: "concluída", certas: cnt(p), total: 20, nota: cnt(p) * 5, respostas: ans(p) });
+    return {
+      ok: true,
+      formandos: names.map(([code, name]) => ({ code, name })),
+      tentativas: [att("1001", names[0][1], 1, p1, 30), att("1001", names[0][1], 2, p2, 5), att("1002", names[1][1], 1, p3, 26),
+        { code: "1003", name: names[2][1], number: 1, inicio: iso(0.2), estado: "em curso", respostas: [] }],
+      acessos: [
+        { quando: iso(0.2), code: "1003", name: names[2][1], evento: "início", tentativa: 1 },
+        { quando: iso(0.21), code: "1003", name: names[2][1], evento: "entrada", tentativa: "" },
+        { quando: iso(4.7), code: "1001", name: names[0][1], evento: "conclusão (" + cnt(p2) + "/20)", tentativa: 2 },
+        { quando: iso(5), code: "1001", name: names[0][1], evento: "início", tentativa: 2 },
+        { quando: iso(25.7), code: "1002", name: names[1][1], evento: "conclusão (" + cnt(p3) + "/20)", tentativa: 1 },
+        { quando: iso(26), code: "1002", name: names[1][1], evento: "início", tentativa: 1 }
+      ]
+    };
+  }
+
+  /* Reentrar automaticamente nesta sessão */
+  let saved = null; try { saved = sessionStorage.getItem("ir_pw"); } catch (e) {}
+  if (saved !== null || !API) { $("pw").value = saved || ""; if (!API) $("f-login").requestSubmit(); else $("f-login").requestSubmit(); }
+})();
+</script>
+</body>
+</html>
