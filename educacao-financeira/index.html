@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dinheiro no Dia a Dia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: uma coluna de leitura larga + barra de módulos fixa no topo; cada módulo é um "envelope" do mês */
+:root{
+  --bg:#f3f6f5; --paper:#ffffff; --ink:#15302b; --muted:#53675f;
+  --line:#d3dfdb; --accent:#0f6b5c; --accent-soft:#dcefea;
+  --coin:#e0a21b; --coin-soft:#fbf0d2;
+  --ok:#2f7d32; --ok-soft:#e3f2e1; --bad:#b4442a; --bad-soft:#fae4dc;
+  --b0:#e3f1ec; --b1:#fff1c9; --b2:#d9f2e7; --b3:#ffe2d6; --b4:#ebe3fb; --b5:#dcefff; --b6:#fde6ec; --heroband:#d6ede6;
+  --display:"Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", Verdana, "Segoe UI", system-ui, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0f1715; --paper:#16211e; --ink:#e4efeb; --muted:#9fb3ac;
+  --line:#2a3b36; --accent:#5fc4ae; --accent-soft:#1c3530;
+  --coin:#f0bd4a; --coin-soft:#33290f;
+  --ok:#7fcf83; --ok-soft:#1a3020; --bad:#f08f74; --bad-soft:#3a1f17;
+  --b0:#1b302b; --b1:#3a3118; --b2:#173328; --b3:#3a241c; --b4:#2a2440; --b5:#18303f; --b6:#3a1d27; --heroband:#152824;
+  color-scheme:dark;}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6}
+a{color:var(--accent)}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,4vw,2.1rem);font-weight:800}
+h3{font-size:1.25rem;font-weight:600;margin-top:1.8rem}
+p{margin:.7rem 0}
+strong{font-weight:700}
+
+/* topo */
+header.hero{padding-block:40px 32px}
+.eyebrow{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.hero p.lead{font-size:1.2rem;max-width:62ch}
+.coin{display:inline-grid;place-items:center;width:1.05em;height:1.05em;border-radius:50%;background:var(--coin);color:#3a2a00;font-size:.85em;vertical-align:-.1em;font-weight:700}
+
+/* barra de módulos */
+nav.mods{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.mods .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;align-items:center}
+nav.mods a{flex:0 0 auto;text-decoration:none;color:var(--ink);font-size:.9rem;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--paper);display:flex;align-items:center;gap:6px}
+nav.mods a .tick{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);display:inline-block}
+nav.mods a.done .tick{background:var(--ok);border-color:var(--ok)}
+.progress{flex:0 0 auto;margin-left:auto;font-size:.85rem;color:var(--muted);padding-left:8px;font-variant-numeric:tabular-nums}
+
+/* módulos */
+section.mod{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:28px clamp(18px,4vw,40px);margin-block:28px}
+.modhead{display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.modnum{font-family:var(--display);font-weight:800;font-size:1rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.time{margin-left:auto;font-size:.85rem;color:var(--muted)}
+.goal{background:var(--accent-soft);border-radius:10px;padding:12px 16px;margin:16px 0}
+.key{background:var(--coin-soft);border-left:4px solid var(--coin);padding:10px 16px;border-radius:0 10px 10px 0;margin:16px 0}
+.formula{font-family:var(--display);font-weight:600;font-size:1.25rem;text-align:center;padding:14px;border:2px dashed var(--line);border-radius:10px;margin:16px 0}
+ul,ol{padding-left:1.4em}
+li{margin:.3rem 0}
+.tbl{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.total td{font-weight:700;border-top:2px solid var(--ink)}
+
+/* exercícios */
+.ex-title{display:flex;align-items:center;gap:10px;margin-top:2.2rem;padding-top:1.2rem;border-top:2px solid var(--line)}
+.ex{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;background:var(--bg)}
+.ex h4{margin:0 0 6px;font-family:var(--display);font-size:1.05rem}
+.q{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:10px 0}
+.q label{flex:1 1 260px;min-width:0}
+input[type=text],select{font:inherit;font-size:1rem;padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);width:9.5em}
+select{width:auto;max-width:100%}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--coin);outline-offset:2px}
+input.ok,select.ok{border-color:var(--ok);background:var(--ok-soft)}
+input.bad,select.bad{border-color:var(--bad);background:var(--bad-soft)}
+.fb{font-size:.9rem;min-width:7em;font-weight:700}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+button{font:inherit;font-weight:700;cursor:pointer;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:var(--paper);padding:8px 16px}
+button.ghost{background:transparent;color:var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+details.sol{margin-top:10px}
+details.sol summary{cursor:pointer;color:var(--accent);font-weight:700}
+details.sol div{padding:8px 0 0}
+.mine{border-style:dashed}
+textarea{font:inherit;width:100%;min-height:90px;padding:10px;border:2px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:10px}
+.calc label{display:flex;flex-direction:column;gap:4px;font-size:.95rem}
+.calc input{width:100%}
+.result{font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--accent);margin-top:10px;font-variant-numeric:tabular-nums}
+
+/* downloads */
+.files{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:16px 0}
+.file{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink);border:2px solid var(--accent);border-radius:12px;padding:14px 16px;background:var(--accent-soft)}
+.file .ic{flex:0 0 auto;width:42px;height:50px;border-radius:6px;background:var(--accent);color:var(--paper);display:grid;place-items:center;font-size:.7rem;font-weight:700;letter-spacing:.05em}
+.file b{display:block}
+.file span{font-size:.85rem;color:var(--muted)}
+
+.done-row{display:flex;justify-content:flex-end;margin-top:24px}
+.done-btn[aria-pressed=true]{background:var(--ok);border-color:var(--ok)}
+
+.banner{display:grid;grid-template-columns:1fr minmax(120px,210px);gap:18px;align-items:center;background:var(--band);border-radius:14px;padding:22px clamp(16px,3vw,28px);margin:-6px -6px 18px}
+.banner .modhead{margin-bottom:6px}
+.banner h2{color:var(--ink)}
+.banner .time{background:var(--paper);border-radius:999px;padding:2px 10px;margin-left:0}
+.ill{width:100%;height:auto;display:block}
+@media (max-width:520px){.banner{grid-template-columns:1fr}.banner .ill{max-width:200px;justify-self:center;grid-row:1}}
+.hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
+@media (max-width:640px){.hero-grid{grid-template-columns:1fr}.hero-grid .ill{max-width:260px;justify-self:center}}
+header.hero{background:var(--heroband);border-radius:0 0 28px 28px}
+#intro{--band:var(--b6)}#inicio{--band:var(--b0)}#m1{--band:var(--b1)}#m2{--band:var(--b2)}#m3{--band:var(--b3)}#m4{--band:var(--b4)}#m5{--band:var(--b5)}#fim{--band:var(--b1)}
+.joao{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--accent)}
+.joao svg{width:34px;height:34px}
+
+body:not(.agreed) .gated{display:none!important}
+p.big{font-family:var(--display);font-weight:600;font-size:1.45rem;line-height:1.3;color:var(--accent);margin-top:4px}
+.agree{margin-top:26px;padding:20px;border:2px dashed var(--accent);border-radius:14px;text-align:center;background:var(--accent-soft)}
+.agree p{margin:0 0 14px}
+.agree-btn{font-size:1.25rem;padding:14px 44px;border-radius:999px;background:var(--coin);border-color:var(--coin);color:#3a2a00}
+.agree-btn[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:var(--paper)}
+
+.intro1 h3.first{margin-top:.4rem}
+p.lead2{font-size:1.12rem}
+.chips{list-style:none;padding:0;margin:14px 0;display:flex;flex-wrap:wrap;gap:8px}
+.chips li{margin:0;padding:6px 14px 6px 10px;border-radius:999px;background:var(--coin-soft);border:1px solid var(--coin);font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:8px}
+.chips li::before{content:"€";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--coin);color:#3a2a00;font-size:.75rem}
+.twocards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:16px 0}
+.tcard{border-radius:12px;padding:16px 18px;border:2px solid var(--line);background:var(--paper)}
+.tcard p{margin:.4rem 0}
+.tcard.fixed{border-color:var(--ok);background:var(--ok-soft)}
+.tcard.var{border-color:var(--coin);background:var(--coin-soft)}
+.tlabel{font-family:var(--display);font-weight:800;font-size:1.1rem;display:block}
+.tcard.fixed .tlabel{color:var(--ok)} .tcard.var .tlabel{color:var(--ink)}
+.tex{font-size:.88rem;color:var(--muted)}
+.steps3{list-style:none;padding:0;margin:14px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;counter-reset:s}
+.steps3 li{margin:0;counter-increment:s;background:var(--accent-soft);border-radius:12px;padding:12px 14px 12px 50px;position:relative}
+.steps3 li::before{content:counter(s);position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--paper);display:grid;place-items:center;font-weight:700;font-size:.9rem}
+blockquote.pull{margin:22px 0 6px;padding:4px 0 4px 20px;border-left:5px solid var(--coin);font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.35;color:var(--accent)}
+hr.sep{border:0;border-top:2px dashed var(--line);margin:28px 0 8px}
+
+p.ask{font-weight:700;font-size:1.1rem;margin:-2px 0 12px}
+p.good{background:var(--ok-soft);border-left:4px solid var(--ok);padding:10px 16px;border-radius:0 10px 10px 0}
+.learn{list-style:none;padding:0;margin:12px 0 4px;display:grid;grid-template-columns:1fr;gap:8px}
+.learn li{margin:0;display:flex;gap:12px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.learn .ico{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--b2);border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-weight:800;font-family:var(--display)}
+.learn li span:last-child{min-width:0}
+
+p.big.sub{font-size:1.2rem;color:var(--ink);margin-top:0}
+.hey{color:var(--accent);font-family:var(--display);font-size:1.15rem}
+.tempt{list-style:none;padding:0;margin:14px 0;display:flex;flex-wrap:wrap;gap:8px}
+.tempt li{margin:0;padding:7px 14px;border-radius:999px;background:var(--b4);border:1px solid var(--line);font-weight:700;font-size:.92rem}
+.tempt li.magic{background:var(--coin);border-color:var(--coin);color:#3a2a00;font-family:var(--display);font-size:1.05rem;transform:rotate(-3deg)}
+.pause{list-style:none;padding:0;margin:10px 0 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pause li{margin:0;font-family:var(--display);font-weight:800;font-size:1.15rem;padding:8px 18px;border-radius:999px;background:var(--accent);color:var(--paper);display:flex;align-items:center}
+.pause li:first-child{background:var(--bad);}
+.pause li+li::before{content:"→";color:var(--muted);margin:0 10px 0 -2px;display:none}
+.bubbles{list-style:none;padding:0;margin:0 0 18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 14px}
+@media (max-width:520px){.bubbles{grid-template-columns:1fr}}
+.bubbles li{margin:0;position:relative;background:var(--paper);border:2px solid var(--accent);border-radius:16px;padding:14px 16px;font-weight:700;font-size:1.02rem}
+.bubbles li::after{content:"";position:absolute;left:22px;bottom:-10px;width:16px;height:16px;background:var(--paper);border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg)}
+.wait{display:flex;gap:16px;align-items:center;background:var(--b4);border-radius:14px;padding:14px 18px;margin:20px 0}
+.wait p{margin:0;min-width:0}
+.badge48{flex:0 0 auto;width:76px;height:76px;border-radius:50%;background:var(--paper);border:4px solid var(--bad);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.35rem;color:var(--bad)}
+@media (max-width:460px){.wait{flex-direction:column;align-items:flex-start}}
+
+.did{list-style:none;padding:0;margin:10px 0;display:flex;flex-wrap:wrap;gap:8px}
+.did li{margin:0}
+.did a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-weight:700;font-size:.92rem;padding:6px 14px 6px 8px;border-radius:999px;background:var(--ok-soft);border:1px solid var(--ok)}
+.did a::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ok);color:var(--paper);font-size:.75rem}
+p.now{font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--accent)}
+.relax{background:var(--b5);border-radius:14px;padding:16px 20px;margin:18px 0}
+.relax p{margin:.3rem 0}
+.nope{list-style:none;padding:0;margin:10px 0;display:flex;flex-wrap:wrap;gap:8px}
+.nope li{margin:0;display:flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border-radius:999px;background:var(--paper);border:1px dashed var(--muted);color:var(--muted);font-weight:700;font-size:.92rem}
+.nope li span{text-decoration:line-through;text-decoration-thickness:2px}
+.nope li::before{content:"✕";text-decoration:none;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--bad);color:var(--paper);font-size:.7rem}
+.tcard.no{background:var(--bg);border-style:dashed}
+.tcard.no .tlabel{text-decoration:line-through;color:var(--muted)}
+.go{text-align:center;margin:26px 0 8px;padding:24px 16px;border-radius:16px;background:var(--b1)}
+.go-q{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,5vw,2.3rem);margin:0 0 14px;color:var(--ink)}
+.go-btn{display:inline-block;text-decoration:none;font-weight:700;font-size:1.2rem;padding:14px 40px;border-radius:999px;background:var(--accent);color:var(--paper);transition:transform .15s}
+.go-btn:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.go-btn{transition:none}.go-btn:hover{transform:none}}
+
+p.joke{font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--bad);transform:rotate(-1.5deg);display:inline-block;margin-top:0}
+.balance{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:14px 0 8px}
+.bc{flex:1 1 160px;min-width:0;text-align:center;padding:18px 12px;border-radius:999px;font-size:.98rem;border:2px solid var(--line)}
+.bc b{display:block;font-family:var(--display);font-size:1.15rem}
+.b-need{background:var(--b2)} .b-like{background:var(--b3)} .b-pay{background:var(--b1)}
+.plus{font-family:var(--display);font-weight:800;font-size:1.6rem;color:var(--muted)}
+@media (max-width:560px){.plus{display:none}.bc{flex-basis:100%;border-radius:14px;padding:12px}}
+.rules{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px}
+.rules li{margin:0;display:flex;gap:16px;align-items:center;background:var(--rc);border-radius:14px;padding:14px 18px}
+.rules li p{margin:2px 0 0}
+.rules li b{font-family:var(--display);font-size:1.12rem}
+.rn{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--paper);border:3px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.3rem}
+.farewell{text-align:center;margin:30px 0 10px;padding:30px 18px;border-radius:18px;background:var(--accent-soft);border:2px dashed var(--accent)}
+.toast{font-family:var(--display);font-weight:600;font-size:1.3rem;line-height:1.35;max-width:30ch;margin:0 auto 10px}
+.bem{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,2.8rem);color:var(--accent);margin:6px 0 16px}
+.sign{display:inline-flex;flex-direction:column;align-items:center;gap:2px;padding-top:10px;border-top:2px solid var(--accent);min-width:180px}
+.sig-name{font-family:var(--display);font-weight:800;font-size:1.35rem}
+.sig-role{font-size:.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.congrats{text-align:center;font-family:var(--display);font-weight:800;font-size:1.2rem;color:var(--ok);margin-top:10px}
+footer{padding-block:20px 50px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="wrap hero-grid"><div><div class="eyebrow">Curso de educação financeira · autoestudo · cerca de 4 horas</div><h1>Dinheiro no Dia a Dia</h1><p class="lead">Aprenda a saber quanto dinheiro recebe, para onde ele vai e como fazer com que chegue até ao fim do mês.</p></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Carteira com moedas e calendário"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<ellipse cx="120" cy="158" rx="95" ry="8" fill="#000" opacity=".08" stroke="none"/>
+<rect x="150" y="20" width="70" height="78" rx="8" fill="#fff"/><rect x="150" y="20" width="70" height="20" rx="8" fill="#e8705a"/>
+<path d="M164 56h12M184 56h12M204 56h6M164 70h12M184 70h12M204 70h6M164 84h12" />
+<circle cx="190" cy="84" r="8" fill="#5bb98c"/>
+<rect x="30" y="62" width="120" height="86" rx="14" fill="#1f7a68"/>
+<rect x="102" y="88" width="56" height="34" rx="10" fill="#2d9a83"/><circle cx="120" cy="105" r="6" fill="#f2b632"/>
+<path d="M44 62l60-34 18 34" fill="#fff"/>
+<ellipse cx="185" cy="148" rx="18" ry="7" fill="#f2b632"/><ellipse cx="185" cy="139" rx="18" ry="7" fill="#f2b632"/><ellipse cx="185" cy="130" rx="18" ry="7" fill="#f2b632"/><ellipse cx="185" cy="121" rx="18" ry="7" fill="#f2b632"/><circle cx="60" cy="40" r="14" fill="#f2b632"/><text x="60" y="45" text-anchor="middle" font-size="16" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">€</text></g></svg></div></header>
+
+<nav class="mods" aria-label="Módulos do curso">
+  <div class="wrap">
+    <a href="#intro" data-mod="intro"><span class="tick"></span>Introdução</a>
+    <a href="#inicio" data-mod="inicio" class="gated"><span class="tick"></span>Início</a>
+    <a href="#m1" data-mod="m1" class="gated"><span class="tick"></span>1. O que recebo</a>
+    <a href="#m2" data-mod="m2" class="gated"><span class="tick"></span>2. Organizar o mês</a>
+    <a href="#m3" data-mod="m3" class="gated"><span class="tick"></span>3. Planear compras</a>
+    <a href="#m4" data-mod="m4" class="gated"><span class="tick"></span>4. Sem impulso</a>
+    <a href="#m5" data-mod="m5" class="gated"><span class="tick"></span>5. Contas e planilha</a>
+    <a href="#fim" data-mod="fim" class="gated"><span class="tick"></span>Final</a>
+    <span class="progress" id="progress">0 de 8</span>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- INTRODUÇÃO -->
+<section class="mod" id="intro">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Introdução</span><span class="time">10 min</span></div><h2>Uma vida mais tranquila</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Balança equilibrada com um coração e uma moeda"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<circle cx="190" cy="34" r="20" fill="#ffd27a"/><path d="M190 4v6M190 58v6M160 34h6M214 34h6"/>
+<path d="M120 40v100"/><path d="M92 150h56l-8-12h-40z" fill="#1f7a68"/>
+<path d="M50 52h140" stroke-width="5"/><circle cx="120" cy="48" r="7" fill="#e8705a"/>
+<path d="M60 52l-22 46M60 52l22 46M180 52l-22 46M180 52l22 46"/>
+<path d="M34 98h52a26 12 0 0 1-52 0z" fill="#fff"/><path d="M154 98h52a26 12 0 0 1-52 0z" fill="#fff"/>
+<path d="M60 92c-10-8-14-14-14-19a7 7 0 0 1 14-2 7 7 0 0 1 14 2c0 5-4 11-14 19z" fill="#e8705a"/>
+<circle cx="180" cy="80" r="13" fill="#f2b632"/><text x="180" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">€</text>
+<path d="M22 150c6-14 18-18 26-16-2 10-12 16-26 16z" fill="#5bb98c"/></g></svg></div>
+  <p class="big">Já parou para pensar no que significa ter uma vida tranquila?</p>
+  <p>Para muitos de nós, viver com tranquilidade é ter saúde, cuidar de quem amamos, dormir com a consciência tranquila e não precisar de passar o dia preocupados com o amanhã. Mas será que conseguimos ter essa tranquilidade quando as contas não fecham, o dinheiro acaba antes do fim do mês ou não sabemos como vamos pagar uma despesa inesperada?</p>
+  <p>A nossa saúde vai muito além de estar livre de doenças. Envolve o bem-estar físico, emocional, mental e também financeiro. Afinal, quando uma destas áreas está em desequilíbrio, as outras também podem ser afetadas.</p>
+  <p>É por isso que, nesta formação, vamos falar sobre dinheiro, escolhas e organização financeira. O nosso objetivo é encontrar formas práticas de gerir melhor os recursos de que dispomos, para viver com mais segurança e tranquilidade.</p>
+  <p class="key">E há algo importante que precisamos de compreender desde já: <strong>ter saúde financeira não significa ser rico, mas saber organizar o dinheiro que temos para atender às nossas necessidades, fazer escolhas conscientes e preparar-nos para o futuro.</strong></p>
+  <div class="agree">
+    <p id="agree-msg">Se concorda com esta ideia, clique em <strong>Concordo</strong> para avançar e começar o curso.</p>
+    <button type="button" id="agree-btn" class="agree-btn">Concordo</button>
+  </div>
+</section>
+
+<!-- INÍCIO -->
+<section class="mod gated" id="inicio">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Bem-vindo</span><span class="time">5 min</span></div><h2>Como estudar</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Computador com o curso e um visto"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<rect x="40" y="30" width="150" height="100" rx="10" fill="#fff"/>
+<rect x="40" y="30" width="150" height="22" rx="10" fill="#1f7a68"/>
+<circle cx="54" cy="41" r="4" fill="#fff" stroke="none"/><circle cx="66" cy="41" r="4" fill="#fff" stroke="none"/>
+<path d="M58 72h60M58 88h90M58 104h44"/>
+<rect x="20" y="130" width="190" height="12" rx="6" fill="#c9d6d2"/>
+<circle cx="196" cy="58" r="20" fill="#5bb98c"/><path d="M187 58l6 6 12-12" stroke="#fff" stroke-width="4"/>
+<circle cx="36" cy="26" r="12" fill="#f2b632"/><text x="36" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">€</text></g></svg></div>
+  <p>Estuda sozinho, ao seu ritmo. Pode falar com os colegas sobre os exercícios.</p>
+  <ol>
+    <li>Leia um módulo de cada vez.</li>
+    <li>Faça os exercícios no fim de cada módulo. Escreva a resposta e carregue em <strong>Verificar</strong>.</li>
+    <li>Se quiser, veja a solução. Tente sempre primeiro.</li>
+    <li>No fim de cada módulo, carregue em <strong>Terminei este módulo</strong>.</li>
+    <li>No Módulo 5, descarregue a planilha e preencha-a com as suas contas.</li>
+  </ol>
+  <h3>O que vai precisar</h3>
+  <ul>
+    <li>O seu último recibo de vencimento (se tiver)</li>
+    <li>Uma conta de luz, água ou telemóvel</li>
+    <li>Papel e caneta, ou o telemóvel</li>
+  </ul>
+  <div class="tbl"><table>
+    <thead><tr><th>Módulo</th><th>Tema</th><th class="n">Tempo</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>O que eu recebo</td><td class="n">45 min</td></tr>
+      <tr><td>2</td><td>Organizar o dinheiro do mês</td><td class="n">45 min</td></tr>
+      <tr><td>3</td><td>Planear as compras</td><td class="n">40 min</td></tr>
+      <tr><td>4</td><td>Não comprar por impulso</td><td class="n">40 min</td></tr>
+      <tr><td>5</td><td>Contas a pagar e a planilha</td><td class="n">50 min</td></tr>
+      <tr><td>—</td><td>Exercício final</td><td class="n">20 min</td></tr>
+    </tbody>
+  </table></div>
+  <p class="key">Os valores em euros deste curso são exemplos para treinar as contas. Cada pessoa tem valores diferentes.</p>
+  <div class="done-row"><button class="done-btn" data-done="inicio" aria-pressed="false">Terminei esta parte</button></div>
+</section>
+
+<!-- MÓDULO 1 -->
+<section class="mod gated" id="m1">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Módulo 1</span><span class="time">45 min</span></div><h2>O que eu recebo</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Recibo de vencimento e moedas"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<rect x="40" y="14" width="110" height="146" rx="6" fill="#fff"/>
+<path d="M56 38h60M56 56h78M56 72h50M56 88h70M56 104h42"/>
+<path d="M56 128h78" stroke-width="4"/><text x="56" y="150" font-size="14" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">LÍQUIDO</text>
+<circle cx="132" cy="140" r="0"/>
+<circle cx="175" cy="62" r="18" fill="#f2b632"/><text x="175" y="67" text-anchor="middle" font-size="20" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">€</text><circle cx="198" cy="104" r="15" fill="#f2b632"/><text x="198" y="109" text-anchor="middle" font-size="17" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">€</text><circle cx="168" cy="128" r="13" fill="#f2b632"/><text x="168" y="133" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">€</text></g></svg></div>
+  <div class="intro1">
+    <h3 class="first">De onde vem o meu dinheiro?</h3>
+    <p class="lead2">O primeiro passo para organizar a nossa vida financeira é saber de onde vem o dinheiro que recebemos. Ele pode vir de diferentes fontes, como o salário de um emprego, os rendimentos de uma aplicação financeira, uma mesada, uma pensão ou um apoio social, por exemplo.</p>
+    <ul class="chips" aria-label="Fontes de dinheiro">
+      <li>Salário de um emprego</li><li>Aplicação financeira</li><li>Mesada</li><li>Pensão</li><li>Apoio social</li>
+    </ul>
+    <p>Conhecer essas fontes ajuda-nos a compreender quanto dinheiro temos disponível e com que frequência o recebemos.</p>
+    <p class="key"><strong>Mas atenção: nem todo o dinheiro que entra na nossa conta está garantido todos os meses!</strong> Por isso, é importante distinguir os rendimentos fixos, que recebemos regularmente, daqueles que são variáveis ou ocasionais, que podem mudar de valor ou deixar de existir.</p>
+    <div class="twocards">
+      <div class="tcard fixed"><span class="tlabel">Rendimentos fixos</span><p>Recebemos regularmente, todos os meses.</p><span class="tex">Ex.: salário, pensão</span></div>
+      <div class="tcard var"><span class="tlabel">Variáveis ou ocasionais</span><p>Podem mudar de valor ou deixar de existir.</p><span class="tex">Ex.: horas extra, prémio, oferta</span></div>
+    </div>
+    <h3>Com quanto dinheiro posso contar?</h3>
+    <p>Para fazer um bom planeamento financeiro, precisamos de saber com quanto dinheiro podemos realmente contar para pagar as despesas e alcançar os nossos objetivos. O ideal é elaborar o orçamento com base nos <strong>rendimentos que temos a certeza de que vamos receber</strong>, evitando comprometer o nosso dinheiro com despesas que não conseguiremos suportar.</p>
+    <p>Se recebermos um valor extra, como um prémio ou uma oferta, podemos decidir a melhor forma de o utilizar, seja para reforçar a poupança, pagar uma dívida ou realizar um objetivo.</p>
+    <ol class="steps3" aria-label="O que fazer com um valor extra">
+      <li><b>Reforçar</b> a poupança</li><li><b>Pagar</b> uma dívida</li><li><b>Realizar</b> um objetivo</li>
+    </ol>
+    <blockquote class="pull">Afinal, cuidar bem do dinheiro começa por conhecer os nossos rendimentos e aprender a tomar decisões de acordo com a nossa realidade financeira.</blockquote>
+    <hr class="sep">
+  </div>
+  <h3 class="first">O salário de quem trabalha por conta de outrem</h3>
+  <p class="lead2">Neste módulo, vamos concentrar-nos na fonte de rendimento mais comum: o salário que recebemos quando trabalhamos <strong>por conta de outrem</strong>, ou seja, com contrato de trabalho para uma empresa ou um patrão.</p>
+  <p>Neste caso, o dinheiro que entra na sua conta é o <strong>salário líquido</strong>: o salário combinado menos os descontos. Para planear, conta o líquido, nunca o bruto.</p>
+  <div class="goal"><strong>Objetivo:</strong> no fim deste módulo, sabe ler as partes principais do recibo de vencimento e calcular quanto dinheiro tem por mês.</div>
+
+  <h3>1.1 Bruto e líquido</h3>
+  <ul>
+    <li><strong>Salário bruto</strong> é o valor combinado no contrato.</li>
+    <li><strong>Descontos</strong> são valores que a empresa tira do bruto e entrega ao Estado.</li>
+    <li><strong>Salário líquido</strong> é o que sobra e chega à sua conta.</li>
+  </ul>
+  <div class="formula">bruto − descontos = líquido</div>
+
+  <h3>1.2 Os descontos mais comuns</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Desconto</th><th>O que é</th><th>Quanto</th></tr></thead>
+    <tbody>
+      <tr><td>Segurança Social</td><td>Paga a sua reforma, baixa médica e subsídio de desemprego</td><td>11% do bruto</td></tr>
+      <tr><td>IRS (retenção na fonte)</td><td>Imposto sobre o que ganha, adiantado todos os meses</td><td>Depende do salário e da família</td></tr>
+      <tr><td>Quota do sindicato</td><td>Só se for sócio de um sindicato</td><td>Valor do sindicato</td></tr>
+    </tbody>
+  </table></div>
+  <p>O IRS descontado todos os meses é um adiantamento. No ano seguinte, na declaração de IRS, pode receber dinheiro de volta ou ter de pagar mais.</p>
+
+  <h3>1.3 Valores que entram além do salário</h3>
+  <ul>
+    <li><strong>Subsídio de alimentação:</strong> um valor por cada dia trabalhado. Pode vir em dinheiro ou num cartão de refeição. Nos dias de férias ou de falta, não recebe.</li>
+    <li><strong>Subsídio de férias e subsídio de Natal:</strong> cada um vale, em regra, um salário a mais por ano. Algumas empresas pagam tudo de uma vez (férias no verão, Natal em dezembro). Outras dividem pelos 12 meses («duodécimos»). Pergunte à sua empresa qual é o seu caso.</li>
+    <li><strong>Horas extra e trabalho noturno:</strong> só entram nos meses em que os faz.</li>
+    <li><strong>Outros apoios:</strong> por exemplo, o abono de família, que é pago pela Segurança Social e não aparece no recibo.</li>
+  </ul>
+  <p class="key">O que só entra em alguns meses (horas extra, subsídios pagos de uma vez) não deve ser usado para pagar as contas de todos os meses.</p>
+
+  <h3 class="joao"><svg viewBox="0 0 40 40" aria-hidden="true"><g stroke="#1d3a34" stroke-width="2"><circle cx="20" cy="20" r="18" fill="#9fd8c5"/><circle cx="20" cy="16" r="7" fill="#f4c9a0"/><path d="M8 33c3-7 21-7 24 0" fill="#1f7a68"/><path d="M13 12c2-5 12-5 14 0" fill="#5a3b25"/></g></svg>1.4 Exemplo: o recibo do João</h3>
+  <p>O João ganha 1.000 € brutos e trabalhou 22 dias. O subsídio de alimentação dele é de 6 € por dia, pago em dinheiro. O valor do IRS é um exemplo.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Linha do recibo</th><th class="n">Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Salário bruto</td><td class="n">1.000,00 €</td></tr>
+      <tr><td>Segurança Social (11%)</td><td class="n">− 110,00 €</td></tr>
+      <tr><td>IRS (retenção, exemplo)</td><td class="n">− 60,00 €</td></tr>
+      <tr class="total"><td>Salário líquido</td><td class="n">830,00 €</td></tr>
+      <tr><td>Subsídio de alimentação (22 × 6 €)</td><td class="n">+ 132,00 €</td></tr>
+      <tr class="total"><td>Total que entra na conta</td><td class="n">962,00 €</td></tr>
+    </tbody>
+  </table></div>
+  <p>Para planear o mês, o João conta com 962 €. Se o subsídio de alimentação viesse em cartão, ele contava 830 € em dinheiro e 132 € só para comida.</p>
+
+  <div class="ex-title"><h3 style="margin:0">Exercícios do Módulo 1</h3></div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 1.1</h4>
+    <p>A Maria ganha 900 € brutos. Desconta 11% para a Segurança Social e 20 € de IRS. Trabalhou 20 dias e recebe 6 € de subsídio de alimentação por dia, em dinheiro.</p>
+    <div class="q"><label for="e11a">1. Quanto desconta para a Segurança Social? (€)</label><input type="text" id="e11a" inputmode="decimal" data-ans="99"><span class="fb"></span></div>
+    <div class="q"><label for="e11b">2. Qual é o salário líquido? (€)</label><input type="text" id="e11b" inputmode="decimal" data-ans="781"><span class="fb"></span></div>
+    <div class="q"><label for="e11c">3. Quanto entra na conta, no total? (€)</label><input type="text" id="e11c" inputmode="decimal" data-ans="901"><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1) 900 € × 11% = 99 €. 2) 900 − 99 − 20 = 781 €. 3) Subsídio: 20 × 6 € = 120 €. Total: 781 + 120 = 901 €.</div></details>
+  </div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 1.2 — Verdadeiro ou falso?</h4>
+    <div class="q"><label for="e12a">1. Para planear o mês, devo usar o salário bruto.</label><select id="e12a" data-ans="F"><option value="">Escolha</option><option value="V">Verdadeiro</option><option value="F">Falso</option></select><span class="fb"></span></div>
+    <div class="q"><label for="e12b">2. O subsídio de alimentação é pago também nos dias de férias.</label><select id="e12b" data-ans="F"><option value="">Escolha</option><option value="V">Verdadeiro</option><option value="F">Falso</option></select><span class="fb"></span></div>
+    <div class="q"><label for="e12c">3. O IRS descontado todos os meses é um adiantamento do imposto.</label><select id="e12c" data-ans="V"><option value="">Escolha</option><option value="V">Verdadeiro</option><option value="F">Falso</option></select><span class="fb"></span></div>
+    <div class="q"><label for="e12d">4. O dinheiro das horas extra é bom para pagar a renda de todos os meses.</label><select id="e12d" data-ans="F"><option value="">Escolha</option><option value="V">Verdadeiro</option><option value="F">Falso</option></select><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1) Falso. 2) Falso. 3) Verdadeiro. 4) Falso.</div></details>
+  </div>
+
+  <div class="ex mine">
+    <h4>Exercício 1.3 — O meu dinheiro</h4>
+    <p>Com o seu recibo (ou com um valor aproximado), faça a conta. Este exercício não tem resposta certa.</p>
+    <div class="calc">
+      <label for="c-liq">O meu salário líquido (€)<input type="text" id="c-liq" inputmode="decimal" placeholder="ex.: 830"></label>
+      <label for="c-dias">Dias trabalhados no mês<input type="text" id="c-dias" inputmode="decimal" placeholder="ex.: 22"></label>
+      <label for="c-sub">Subsídio de alimentação por dia (€)<input type="text" id="c-sub" inputmode="decimal" placeholder="ex.: 6"></label>
+      <label for="c-out">Outros valores todos os meses (€)<input type="text" id="c-out" inputmode="decimal" placeholder="ex.: 0"></label>
+    </div>
+    <div class="result" id="c-res">Entra na minha conta, por mês: 0,00 €</div>
+    <p style="font-size:.9rem;color:var(--muted)">Se o subsídio vier em cartão de refeição, lembre-se de que esse dinheiro é só para comida.</p>
+  </div>
+
+  <div class="done-row"><button class="done-btn" data-done="m1" aria-pressed="false">Terminei este módulo</button></div>
+</section>
+
+<!-- MÓDULO 2 -->
+<section class="mod gated" id="m2">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Módulo 2</span><span class="time">45 min</span></div><h2>Organizar o dinheiro do mês</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Três frascos: casa, comida e poupança"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M20 50h46v96a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8z" fill="#ffffff" opacity=".9"/>
+<rect x="23" y="70" width="40" height="80" rx="4" fill="#9fd8c5" stroke="none"/>
+<path d="M20 50h46v96a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8z" fill="none"/>
+<rect x="16" y="38" width="54" height="14" rx="4" fill="#e8705a"/>
+<text x="43" y="110" text-anchor="middle" font-size="8" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">CASA</text><path d="M97 50h46v96a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8z" fill="#ffffff" opacity=".9"/>
+<rect x="100" y="95" width="40" height="55" rx="4" fill="#ffd27a" stroke="none"/>
+<path d="M97 50h46v96a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8z" fill="none"/>
+<rect x="93" y="38" width="54" height="14" rx="4" fill="#e8705a"/>
+<text x="120" y="110" text-anchor="middle" font-size="8" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">COMIDA</text><path d="M174 50h46v96a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8z" fill="#ffffff" opacity=".9"/>
+<rect x="177" y="120" width="40" height="30" rx="4" fill="#f2b632" stroke="none"/>
+<path d="M174 50h46v96a8 8 0 0 1-8 8h-30a8 8 0 0 1-8-8z" fill="none"/>
+<rect x="170" y="38" width="54" height="14" rx="4" fill="#e8705a"/>
+<text x="197" y="110" text-anchor="middle" font-size="8" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">POUPAR</text><circle cx="197" cy="22" r="12" fill="#f2b632"/><text x="197" y="27" text-anchor="middle" font-size="14" font-weight="700" fill="#1d3a34" stroke="none" font-family="Verdana,sans-serif">€</text></g></svg></div>
+  <div class="intro2">
+    <p class="big">O dinheiro chega, as contas aparecem e, muitas vezes, parece que o mês é maior do que o nosso orçamento!</p>
+    <p class="ask">Já passou por essa situação?</p>
+    <p class="good"><strong>A boa notícia</strong> é que, com organização e algumas mudanças de hábitos, podemos ter mais controlo sobre o nosso dinheiro e evitar surpresas desagradáveis no final do mês.</p>
+    <h3>Neste módulo, vamos aprender a:</h3>
+    <ul class="learn">
+      <li><span class="ico">1</span><span>organizar o dinheiro que recebemos;</span></li>
+      <li><span class="ico">2</span><span>identificar para onde ele vai;</span></li>
+      <li><span class="ico">3</span><span>distinguir as despesas que precisamos de pagar daquelas em que podemos poupar;</span></li>
+      <li><span class="ico">4</span><span>preparar-nos para despesas que não surgem todos os meses;</span></li>
+      <li><span class="ico">5</span><span>começar a construir uma reserva para imprevistos.</span></li>
+    </ul>
+    <h3>Não é preciso ganhar muito dinheiro para começar a organizar as finanças</h3>
+    <p>O mais importante é saber com quanto podemos contar, fazer escolhas conscientes e dar pequenos passos, de acordo com a nossa realidade.</p>
+    <ol class="steps3" aria-label="O mais importante">
+      <li><b>Saber</b> com quanto podemos contar</li><li><b>Fazer</b> escolhas conscientes</li><li><b>Dar</b> pequenos passos</li>
+    </ol>
+    <blockquote class="pull">O objetivo não é deixar de viver ou de fazer aquilo de que gostamos, mas aprender a usar o dinheiro a nosso favor, com mais tranquilidade, segurança e liberdade para decidir.</blockquote>
+    <hr class="sep">
+  </div>
+  <p>O mês corre bem quando o que sai é menor do que o que entra. Para isso, é preciso escrever tudo antes de gastar.</p>
+  <div class="goal"><strong>Objetivo:</strong> no fim deste módulo, sabe separar as despesas do mês e ver quanto sobra.</div>
+
+  <h3>2.1 Entradas e saídas</h3>
+  <ul>
+    <li><strong>Entradas:</strong> todo o dinheiro que recebe (Módulo 1).</li>
+    <li><strong>Saídas:</strong> todo o dinheiro que gasta.</li>
+  </ul>
+  <div class="formula">entradas − saídas = o que sobra</div>
+  <p>Se o resultado for negativo, está a gastar mais do que ganha.</p>
+
+  <h3>2.2 Três tipos de despesa</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Tipo</th><th>O que é</th><th>Exemplos</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Fixas</strong></td><td>Todos os meses, quase o mesmo valor</td><td>Renda, prestação da casa, telemóvel, internet, passe</td></tr>
+      <tr><td><strong>Variáveis</strong></td><td>Todos os meses, mas o valor muda</td><td>Supermercado, luz, água, gás, combustível</td></tr>
+      <tr><td><strong>De vez em quando</strong></td><td>Uma ou poucas vezes por ano</td><td>Seguro do carro, IUC, material escolar, prendas de Natal</td></tr>
+    </tbody>
+  </table></div>
+  <p class="key">As despesas «de vez em quando» são as que mais estragam o mês, porque esquecemo-nos delas. Truque: divida o valor por 12 e guarde essa parte todos os meses. Seguro de 240 € por ano = 20 € por mês.</p>
+
+  <h3>2.3 A ordem certa para usar o dinheiro</h3>
+  <p>Quando o salário entra, siga esta ordem:</p>
+  <ol>
+    <li><strong>Contas essenciais:</strong> casa, luz, água, gás, transporte.</li>
+    <li><strong>Comida:</strong> supermercado e refeições do mês.</li>
+    <li><strong>Poupança:</strong> um valor pequeno, logo no início do mês. Mesmo 10 € ou 20 € contam.</li>
+    <li><strong>Outras despesas:</strong> roupa, lazer, cafés, saídas.</li>
+  </ol>
+  <p>Guardar no início do mês funciona melhor do que guardar «o que sobrar». Muitas vezes, no fim, não sobra nada.</p>
+
+  <h3>2.4 O fundo de emergência</h3>
+  <p>O fundo de emergência é dinheiro guardado só para imprevistos: uma avaria, uma consulta, uma falta de trabalho. Primeira meta: juntar o valor de <strong>um mês</strong> das suas despesas. Depois, tentar chegar a <strong>três meses</strong>. Guarde-o numa conta separada, para não o gastar sem querer.</p>
+
+  <h3 class="joao"><svg viewBox="0 0 40 40" aria-hidden="true"><g stroke="#1d3a34" stroke-width="2"><circle cx="20" cy="20" r="18" fill="#9fd8c5"/><circle cx="20" cy="16" r="7" fill="#f4c9a0"/><path d="M8 33c3-7 21-7 24 0" fill="#1f7a68"/><path d="M13 12c2-5 12-5 14 0" fill="#5a3b25"/></g></svg>2.5 Exemplo: o mês do João</h3>
+  <p>O João recebe 962 € por mês (Módulo 1).</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Despesa</th><th>Tipo</th><th class="n">Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Renda</td><td>Fixa</td><td class="n">400 €</td></tr>
+      <tr><td>Telemóvel e internet</td><td>Fixa</td><td class="n">35 €</td></tr>
+      <tr><td>Passe</td><td>Fixa</td><td class="n">40 €</td></tr>
+      <tr><td>Supermercado</td><td>Variável</td><td class="n">220 €</td></tr>
+      <tr><td>Luz</td><td>Variável</td><td class="n">45 €</td></tr>
+      <tr><td>Água</td><td>Variável</td><td class="n">20 €</td></tr>
+      <tr><td>Parte do seguro e do IUC (÷ 12)</td><td>De vez em quando</td><td class="n">30 €</td></tr>
+      <tr><td>Poupança</td><td>—</td><td class="n">50 €</td></tr>
+      <tr><td>Lazer e outros</td><td>Variável</td><td class="n">70 €</td></tr>
+      <tr class="total"><td>Total de saídas</td><td></td><td class="n">910 €</td></tr>
+    </tbody>
+  </table></div>
+  <p>962 € − 910 € = <strong>52 € de sobra</strong>. O João pode juntar esta sobra à poupança ou guardá-la para um imprevisto.</p>
+
+  <div class="ex-title"><h3 style="margin:0">Exercícios do Módulo 2</h3></div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 2.1 — Fixa, variável ou de vez em quando?</h4>
+    <div class="q"><label for="e21a">1. Renda da casa</label><select id="e21a" data-ans="F"></select><span class="fb"></span></div>
+    <div class="q"><label for="e21b">2. Conta da luz</label><select id="e21b" data-ans="V"></select><span class="fb"></span></div>
+    <div class="q"><label for="e21c">3. Material escolar em setembro</label><select id="e21c" data-ans="O"></select><span class="fb"></span></div>
+    <div class="q"><label for="e21d">4. Mensalidade do ginásio</label><select id="e21d" data-ans="F"></select><span class="fb"></span></div>
+    <div class="q"><label for="e21e">5. Supermercado</label><select id="e21e" data-ans="V"></select><span class="fb"></span></div>
+    <div class="q"><label for="e21f">6. Prendas de Natal</label><select id="e21f" data-ans="O"></select><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1) Fixa. 2) Variável. 3) De vez em quando. 4) Fixa. 5) Variável. 6) De vez em quando.</div></details>
+  </div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 2.2</h4>
+    <p>A Ana recebe 850 € por mês. Gasta: renda 350 €, luz e água 60 €, telemóvel 15 €, passe 40 €, supermercado 200 €, farmácia 20 €, cafés e lanches 60 €.</p>
+    <div class="q"><label for="e22a">1. Quanto gasta no total? (€)</label><input type="text" id="e22a" inputmode="decimal" data-ans="745"><span class="fb"></span></div>
+    <div class="q"><label for="e22b">2. Quanto sobra? (€)</label><input type="text" id="e22b" inputmode="decimal" data-ans="105"><span class="fb"></span></div>
+    <div class="q"><label for="e22c">3. Em que despesa a Ana pode cortar mais facilmente?</label><select id="e22c" data-ans="cafes"><option value="">Escolha</option><option value="renda">Renda</option><option value="farmacia">Farmácia</option><option value="cafes">Cafés e lanches</option><option value="passe">Passe</option></select><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1) 350 + 60 + 15 + 40 + 200 + 20 + 60 = 745 €. 2) 850 − 745 = 105 €. 3) Cafés e lanches (60 €): é a mais fácil de reduzir.</div></details>
+  </div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 2.3</h4>
+    <p>O Rui paga 180 € de IUC e seguro por ano e gasta 120 € em prendas de Natal.</p>
+    <div class="q"><label for="e23a">Quanto deve guardar por mês para estas despesas? (€)</label><input type="text" id="e23a" inputmode="decimal" data-ans="25"><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>180 + 120 = 300 € por ano. 300 ÷ 12 = 25 € por mês.</div></details>
+  </div>
+
+  <div class="ex mine">
+    <h4>Exercício 2.4 — As minhas despesas</h4>
+    <p>Escreva as suas cinco maiores despesas do mês e marque F (fixa), V (variável) ou O (de vez em quando).</p>
+    <textarea id="e24" placeholder="ex.: Renda – 400 € – F"></textarea>
+  </div>
+
+  <div class="done-row"><button class="done-btn" data-done="m2" aria-pressed="false">Terminei este módulo</button></div>
+</section>
+
+<!-- MÓDULO 3 -->
+<section class="mod gated" id="m3">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Módulo 3</span><span class="time">40 min</span></div><h2>Planear as compras</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Cesto de compras e lista"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<rect x="148" y="14" width="74" height="96" rx="6" fill="#fff" transform="rotate(6 185 62)"/>
+<g transform="rotate(6 185 62)"><path d="M160 36l5 5 9-10M182 38h28M160 58l5 5 9-10M182 60h28M162 82h12M182 82h28"/></g>
+<path d="M30 78h120l-14 70h-92z" fill="#e8705a"/>
+<path d="M54 78l20-40M126 78l-20-40" />
+<circle cx="66" cy="70" r="16" fill="#ffd27a"/><rect x="88" y="44" width="18" height="34" rx="4" fill="#ffffff"/>
+<path d="M112 78c0-20 10-28 22-30" fill="none"/><circle cx="134" cy="48" r="7" fill="#5bb98c"/>
+<path d="M44 100h92M48 122h84" stroke="#ffffff" /></g></svg></div>
+  <p>Quem compra com lista e compara preços gasta menos todos os meses. Para as compras grandes, juntar o dinheiro antes sai mais barato do que pagar a prestações.</p>
+  <div class="goal"><strong>Objetivo:</strong> no fim deste módulo, sabe fazer uma lista de compras, comparar preços e planear uma compra maior.</div>
+
+  <h3>3.1 As compras do dia a dia</h3>
+  <p>Preparar as compras do dia a dia é uma forma simples de cuidar melhor do nosso dinheiro. Muitas vezes, gastamos mais do que o necessário não porque precisamos de mais produtos, mas porque compramos por impulso, nos esquecemos do que já temos em casa ou não planeamos as refeições. Quando nos organizamos antes de ir ao supermercado, conseguimos fazer escolhas mais conscientes, evitar desperdícios e aproveitar melhor o dinheiro disponível.</p>
+  <p>Além disso, pequenas decisões tomadas ao longo da semana podem fazer uma grande diferença no orçamento familiar ao final do mês. O segredo não é deixar de comprar aquilo de que precisamos, mas aprender a comprar de forma mais inteligente, distinguindo o que é essencial daquilo que é apenas uma vontade do momento. Planear as compras é, por isso, um passo importante para manter as despesas sob controlo e ter mais dinheiro disponível para outros objetivos.</p>
+  <p>Antes de sair para fazer as compras, é importante reservar alguns minutos para organizar o que realmente precisamos. Comece por verificar o frigorífico, o congelador e a despensa, identificando os produtos que estão a acabar e aqueles que ainda tem em quantidade suficiente. Em seguida, planeie as refeições dos próximos dias e faça uma lista com os ingredientes e os produtos em falta.</p>
+  <p>Aproveite também para definir os melhores dias para ir às compras, tendo em conta a sua rotina, o tempo disponível e as promoções dos supermercados. Se possível, concentre as compras numa ou duas idas por semana, evitando deslocações desnecessárias e compras por impulso. Por fim, estabeleça um orçamento máximo para as compras e procure respeitá-lo. Com um pouco de planeamento, é possível poupar tempo, evitar desperdícios e utilizar o dinheiro de forma mais consciente.</p>
+  <p><strong>Em resumo, antes de sair de casa:</strong></p>
+  <ol>
+    <li><strong>Veja o que já tem</strong> no frigorífico e na despensa.</li>
+    <li><strong>Pense nas refeições da semana.</strong> Assim sabe o que precisa de comprar.</li>
+    <li><strong>Escreva a lista</strong> e leve-a (no papel ou no telemóvel).</li>
+    <li><strong>Defina um valor máximo</strong> antes de sair de casa.</li>
+    <li><strong>Compre só o que está na lista.</strong></li>
+  </ol>
+  <p>Dicas que poupam dinheiro:</p>
+  <ul>
+    <li>Vá às compras depois de comer. Com fome, compramos mais.</li>
+    <li>Experimente a marca branca do supermercado.</li>
+    <li>Veja os folhetos de promoções, mas só compre o que já ia comprar.</li>
+    <li>Evite ir às compras todos os dias. Uma ou duas idas por semana chegam.</li>
+  </ul>
+
+  <h3>3.2 Comparar preços: o preço por quilo</h3>
+  <p>Na etiqueta da prateleira há dois preços: o preço do produto e o <strong>preço por kg</strong> (ou por litro). Compare sempre o preço por kg. A embalagem maior nem sempre é a mais barata.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Produto</th><th class="n">Preço</th><th class="n">Preço por kg</th></tr></thead>
+    <tbody>
+      <tr><td>Café, 250 g</td><td class="n">3,00 €</td><td class="n"><strong>12,00 €/kg</strong></td></tr>
+      <tr><td>Café, 500 g</td><td class="n">6,50 €</td><td class="n">13,00 €/kg</td></tr>
+    </tbody>
+  </table></div>
+  <p>Aqui, o pacote pequeno é mais barato.</p>
+
+  <h3>3.3 As compras grandes</h3>
+  <p>Um frigorífico, uma televisão, um telemóvel ou uma bicicleta precisam de plano.</p>
+  <ol>
+    <li><strong>Precisa mesmo?</strong> Ou o que tem ainda funciona?</li>
+    <li><strong>Compare em pelo menos três lojas</strong> (também online).</li>
+    <li><strong>Junte o dinheiro antes.</strong> Divida o preço pelos meses que tem para juntar.</li>
+    <li><strong>Se pensar em prestações, faça a conta do total.</strong> Multiplique a prestação pelo número de meses.</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Forma de pagar</th><th>Conta</th><th class="n">Total pago</th></tr></thead>
+    <tbody>
+      <tr><td>A pronto</td><td>400 €</td><td class="n">400 €</td></tr>
+      <tr><td>12 prestações de 39 €</td><td>12 × 39 €</td><td class="n">468 €</td></tr>
+    </tbody>
+  </table></div>
+  <p>A prestações, a televisão custa mais 68 €. Nos contratos de crédito, procure a <strong>TAEG</strong>: quanto mais alta, mais caro fica o crédito. Cuidado também com o cartão de crédito: pagar só o mínimo faz a dívida crescer.</p>
+
+  <div class="ex-title"><h3 style="margin:0">Exercícios do Módulo 3</h3></div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 3.1 — Qual é mais barato?</h4>
+    <p>Arroz de 1 kg a 1,20 € ou arroz de 500 g a 0,70 €. Calcule o preço por kg de cada um.</p>
+    <div class="q"><label for="e31a">Arroz de 1 kg: preço por kg (€)</label><input type="text" id="e31a" inputmode="decimal" data-ans="1.20"><span class="fb"></span></div>
+    <div class="q"><label for="e31b">Arroz de 500 g: preço por kg (€)</label><input type="text" id="e31b" inputmode="decimal" data-ans="1.40"><span class="fb"></span></div>
+    <div class="q"><label for="e31c">Qual é mais barato?</label><select id="e31c" data-ans="1kg"><option value="">Escolha</option><option value="1kg">O de 1 kg</option><option value="500g">O de 500 g</option></select><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1 kg = 1,20 €/kg. 500 g = 0,70 × 2 = 1,40 €/kg. O pacote de 1 kg é mais barato.</div></details>
+  </div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 3.2</h4>
+    <p>A Sofia quer comprar uma máquina de lavar de 360 €. Quer comprá-la daqui a 6 meses, sem prestações.</p>
+    <div class="q"><label for="e32a">Quanto deve guardar por mês? (€)</label><input type="text" id="e32a" inputmode="decimal" data-ans="60"><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>360 ÷ 6 = 60 € por mês.</div></details>
+  </div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 3.3</h4>
+    <p>Um telemóvel custa 300 € a pronto ou 10 prestações de 34 €.</p>
+    <div class="q"><label for="e33a">1. Quanto paga no total a prestações? (€)</label><input type="text" id="e33a" inputmode="decimal" data-ans="340"><span class="fb"></span></div>
+    <div class="q"><label for="e33b">2. Quanto paga a mais? (€)</label><input type="text" id="e33b" inputmode="decimal" data-ans="40"><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1) 10 × 34 = 340 €. 2) 340 − 300 = 40 € a mais.</div></details>
+  </div>
+
+  <div class="ex mine">
+    <h4>Exercício 3.4 — A minha lista</h4>
+    <p>Faça a lista de compras da sua próxima ida ao supermercado. Escreva no fim o valor máximo que vai gastar.</p>
+    <textarea id="e34" placeholder="ex.: arroz, leite, ovos, fruta… — máximo: 40 €"></textarea>
+  </div>
+
+  <div class="done-row"><button class="done-btn" data-done="m3" aria-pressed="false">Terminei este módulo</button></div>
+</section>
+
+<!-- MÓDULO 4 -->
+<section class="mod gated" id="m4">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Módulo 4</span><span class="time">40 min</span></div><h2>Não comprar por impulso</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Relógio, 48 horas e saco de compras em pausa"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<circle cx="78" cy="84" r="62" fill="#fff"/>
+<path d="M78 84V46M78 84l26 16" stroke-width="5"/><circle cx="78" cy="84" r="5" fill="#1d3a34"/>
+<path d="M78 28v8M78 132v8M22 84h8M126 84h8"/>
+<rect x="128" y="20" width="96" height="46" rx="23" fill="#e8705a"/>
+<text x="176" y="51" text-anchor="middle" font-size="22" font-weight="800" fill="#fff" stroke="none" font-family="Verdana,sans-serif">48 h</text>
+<path d="M150 100h66l-8 50h-50z" fill="#c9b8ef"/><path d="M164 100c0-18 38-18 38 0" fill="none"/>
+<rect x="168" y="112" width="8" height="24" rx="2" fill="#fff"/><rect x="184" y="112" width="8" height="24" rx="2" fill="#fff"/></g></svg></div>
+  <div class="intro4">
+    <p class="big">Já entrou numa loja para comprar uma coisa e saiu com outras cinco que nem sabia que precisava?</p>
+    <p class="big sub">Ou comprou aquela peça de roupa que estava na moda, chegou a casa e percebeu que não tinha nada a ver consigo?</p>
+    <p><strong class="hey">Pois é!</strong> Às vezes, o nosso dinheiro parece ter asas e desaparece em pequenas compras que, na hora, pareciam ótimas ideias.</p>
+    <ul class="tempt" aria-label="Tentações do dia a dia">
+      <li>Uma promoção imperdível</li>
+      <li>Um anúncio nas redes sociais</li>
+      <li>Um café acompanhado de um bolo</li>
+      <li>Uma novidade que toda a gente está a comprar</li>
+      <li class="magic">«Eu mereço!»</li>
+    </ul>
+    <p>Tudo parece justificar uma pequena despesa.</p>
+    <p class="key"><strong>O problema</strong> é que, quando juntamos muitos pequenos gastos, descobrimos que o dinheiro que parecia não fazer falta afinal fazia muita!</p>
+    <p>E não se trata de deixar de comprar tudo o que gostamos ou de nunca nos permitirmos um mimo. A questão é perceber se estamos a comprar…</p>
+    <div class="twocards">
+      <div class="tcard fixed"><span class="tlabel">… porque realmente queremos</span><p>e precisamos daquela coisa</p></div>
+      <div class="tcard var"><span class="tlabel">… ou porque fomos influenciados</span><p>pelo momento, pela publicidade ou pela vontade de acompanhar os outros</p></div>
+    </div>
+    <p class="good"><strong>A boa notícia</strong> é que podemos poupar sem ganhar mais dinheiro, simplesmente pensando melhor antes de gastar.</p>
+    <h3>Antes de comprar:</h3>
+    <ol class="pause" aria-label="Antes de comprar">
+      <li>Pare</li><li>Respire</li><li>Pergunte-se</li>
+    </ol>
+    <ul class="bubbles" aria-label="Perguntas a fazer antes de comprar">
+      <li>Preciso mesmo disto?</li>
+      <li>Vou usar?</li>
+      <li>Compraria se não estivesse em promoção?</li>
+      <li>Este dinheiro não me fará falta para outra coisa mais importante?</li>
+    </ul>
+    <div class="wait"><span class="badge48">48 h</span><p>Por vezes, basta esperar 48 horas para perceber que aquela vontade afinal já passou. E, se continuar a fazer sentido, poderá planear a compra com mais consciência.</p></div>
+    <blockquote class="pull">Afinal, o objetivo não é deixar de aproveitar a vida, mas garantir que o nosso dinheiro é gasto naquilo que realmente importa para nós — e não em coisas que, passado um dia, já nem nos lembramos de ter comprado!</blockquote>
+    <hr class="sep">
+  </div>
+  <p>Uma compra por impulso é uma compra que não estava planeada e que fazemos sem pensar. Esperar 48 horas antes de comprar resolve a maior parte delas.</p>
+  <div class="goal"><strong>Objetivo:</strong> no fim deste módulo, sabe reconhecer o que o leva a comprar sem pensar e tem quatro ferramentas para travar.</div>
+
+  <h3>4.1 O que nos leva a comprar sem pensar</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Situação</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td>Promoções</td><td>«Leve 3, pague 2» de uma coisa que não precisa</td></tr>
+      <tr><td>Pressa</td><td>«Últimas unidades!», «Só hoje!»</td></tr>
+      <tr><td>Produtos junto à caixa</td><td>Doces, pilhas, revistas</td></tr>
+      <tr><td>Cansaço, tristeza ou stress</td><td>Comprar para se sentir melhor</td></tr>
+      <tr><td>Redes sociais e publicidade</td><td>Ver alguém a usar e querer igual</td></tr>
+      <tr><td>Pagar é muito fácil</td><td>Cartão por aproximação, MB WAY, compra online com um clique</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>4.2 Quatro ferramentas para travar</h3>
+  <ol>
+    <li><strong>A regra das 48 horas.</strong> Viu uma coisa que não estava na lista? Espere dois dias. Se ainda precisar dela, planeie a compra (Módulo 3).</li>
+    <li><strong>As quatro perguntas.</strong> Antes de pagar, pergunte:
+      <ul>
+        <li>Preciso disto ou só quero?</li>
+        <li>Tenho este dinheiro agora, sem tirar das contas?</li>
+        <li>Onde e quando vou usar?</li>
+        <li>Comprava isto se não estivesse em promoção?</li>
+      </ul></li>
+    <li><strong>A lista de desejos.</strong> Escreva o que gostava de comprar e o preço. Escolha um desejo por mês e junte dinheiro para ele.</li>
+    <li><strong>Menos tentação.</strong> Desligue as notificações das lojas no telemóvel. Não guarde o cartão nos sites de compras. Leve só o dinheiro de que precisa.</li>
+  </ol>
+
+  <h3>4.3 Os pequenos gastos também contam</h3>
+  <div class="formula">1 € × 22 dias = 22 € por mês &nbsp;→&nbsp; 22 € × 12 = 264 € por ano</div>
+  <p>Um café de 1 € todos os dias de trabalho parece pouco. Não é preciso cortar tudo: é preciso saber quanto gasta e escolher.</p>
+
+  <div class="ex-title"><h3 style="margin:0">Exercícios do Módulo 4</h3></div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 4.1 — O que levou a pessoa a comprar?</h4>
+    <div class="q"><label for="e41a">1. O Carlos estava triste depois do trabalho e comprou umas sapatilhas online.</label><select id="e41a" data-ans="emocao"></select><span class="fb"></span></div>
+    <div class="q"><label for="e41b">2. A Inês viu «Só hoje: −50%» e comprou uma frigideira, mas já tinha duas.</label><select id="e41b" data-ans="promo"></select><span class="fb"></span></div>
+    <div class="q"><label for="e41c">3. Na fila da caixa, o Pedro juntou dois chocolates às compras.</label><select id="e41c" data-ans="caixa"></select><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1) Tristeza ou cansaço. 2) Promoção e pressa («Só hoje»). 3) Produtos junto à caixa.</div></details>
+  </div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 4.2</h4>
+    <p>A Joana compra um lanche de 2,50 € cinco dias por semana.</p>
+    <div class="q"><label for="e42a">1. Quanto gasta por semana? (€)</label><input type="text" id="e42a" inputmode="decimal" data-ans="12.5"><span class="fb"></span></div>
+    <div class="q"><label for="e42b">2. Quanto gasta por mês (4 semanas)? (€)</label><input type="text" id="e42b" inputmode="decimal" data-ans="50"><span class="fb"></span></div>
+    <div class="q"><label for="e42c">3. Quanto gasta por ano (12 meses)? (€)</label><input type="text" id="e42c" inputmode="decimal" data-ans="600"><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>1) 2,50 × 5 = 12,50 €. 2) 12,50 × 4 = 50 €. 3) 50 × 12 = 600 €.</div></details>
+  </div>
+
+  <div class="ex mine">
+    <h4>Exercício 4.3 — Os meus pequenos gastos</h4>
+    <p>Durante uma semana, escreva todos os gastos pequenos (cafés, lanches, tabaco, apps, raspadinhas). No fim, some tudo e multiplique por 4. Esse é o seu gasto pequeno por mês. Pode usar o separador «Pequenos gastos» da planilha (Módulo 5).</p>
+  </div>
+
+  <div class="done-row"><button class="done-btn" data-done="m4" aria-pressed="false">Terminei este módulo</button></div>
+</section>
+
+<!-- MÓDULO 5 -->
+<section class="mod gated" id="m5">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Módulo 5</span><span class="time">50 min</span></div><h2>Contas a pagar e a planilha</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Calendário com contas pagas e telemóvel com planilha"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<rect x="22" y="22" width="148" height="134" rx="10" fill="#8cc6e8"/>
+<rect x="22" y="22" width="148" height="30" rx="10" fill="#1f7a68"/><path d="M50 14v18M142 14v18" stroke-width="5"/>
+<rect x="34" y="64" width="26" height="22" rx="4" fill="#ffffff"/><rect x="68" y="64" width="26" height="22" rx="4" fill="#ffffff"/><rect x="102" y="64" width="26" height="22" rx="4" fill="#ffffff"/><rect x="136" y="64" width="26" height="22" rx="4" fill="#ffffff"/><rect x="34" y="94" width="26" height="22" rx="4" fill="#ffffff"/><rect x="68" y="94" width="26" height="22" rx="4" fill="#ffffff"/><rect x="102" y="94" width="26" height="22" rx="4" fill="#ffffff"/><rect x="136" y="94" width="26" height="22" rx="4" fill="#ffffff"/><rect x="34" y="124" width="26" height="22" rx="4" fill="#ffffff"/><rect x="68" y="124" width="26" height="22" rx="4" fill="#ffffff"/><rect x="102" y="124" width="26" height="22" rx="4" fill="#ffffff"/><rect x="136" y="124" width="26" height="22" rx="4" fill="#ffffff"/><circle cx="47" cy="75" r="9" fill="#5bb98c"/><path d="M43 75l3 3 6-6" stroke="#fff"/><circle cx="81" cy="75" r="9" fill="#5bb98c"/><path d="M77 75l3 3 6-6" stroke="#fff"/><circle cx="115" cy="105" r="9" fill="#5bb98c"/><path d="M111 105l3 3 6-6" stroke="#fff"/><circle cx="149" cy="135" r="9" fill="#e8705a"/>
+<rect x="168" y="62" width="56" height="96" rx="10" fill="#fff"/>
+<rect x="176" y="76" width="40" height="8" rx="2" fill="#ffd27a" stroke="none"/><rect x="176" y="92" width="40" height="8" rx="2" fill="#ffd27a" stroke="none"/><rect x="176" y="108" width="40" height="8" rx="2" fill="#9fd8c5" stroke="none"/><rect x="176" y="124" width="40" height="8" rx="2" fill="#9fd8c5" stroke="none"/></g></svg></div>
+  <div class="intro5">
+    <p class="big">Chegou o momento de passar das palavras à ação!</p>
+    <p>Até aqui, falámos sobre como:</p>
+    <ul class="did" aria-label="O que já aprendemos">
+      <li><a href="#m1">gerir melhor o nosso dinheiro</a></li>
+      <li><a href="#m3">planear as compras</a></li>
+      <li><a href="#m4">evitar gastos por impulso</a></li>
+      <li><a href="#m2">organizar as despesas</a></li>
+    </ul>
+    <p class="now">Agora, vamos pôr tudo isso em prática.</p>
+    <div class="relax">
+      <p><strong>E não se preocupe!</strong> Não precisa de:</p>
+      <ul class="nope">
+        <li><span>ser especialista em finanças</span></li>
+        <li><span>dominar o Excel</span></li>
+        <li><span>fazer contas de cabeça</span></li>
+      </ul>
+      <p>Vamos avançar <strong>passo a passo</strong>, de forma simples e adaptada à sua realidade.</p>
+    </div>
+    <h3>O que vamos construir</h3>
+    <p>Nesta etapa, vai começar a construir uma ferramenta que pode fazer uma grande diferença no seu dia a dia: <strong>a sua própria organização financeira</strong>. Vamos:</p>
+    <ol class="steps3 build" aria-label="Passos desta etapa">
+      <li><b>Identificar</b> as contas que temos de pagar</li>
+      <li><b>Registar</b> os valores e as datas de vencimento</li>
+      <li><b>Perceber</b> para onde vai o nosso dinheiro</li>
+    </ol>
+    <p>Com a ajuda da folha de cálculo, será mais fácil <strong>acompanhar as despesas</strong>, <strong>antecipar pagamentos</strong> e <strong>evitar esquecimentos</strong> que podem sair caros.</p>
+    <p class="key"><strong>E aqui está o mais importante:</strong> não precisamos de uma organização perfeita, mas de uma organização que funcione para nós.</p>
+    <div class="twocards">
+      <div class="tcard no"><span class="tlabel">Organização perfeita</span><p>Não é isto que procuramos.</p></div>
+      <div class="tcard fixed"><span class="tlabel">Organização que funcione para nós</span><p>É esta que vamos construir.</p></div>
+    </div>
+    <p>Cada pessoa tem os seus rendimentos, as suas despesas e os seus desafios. O objetivo é terminar esta etapa com uma ferramenta prática, <strong>pronta a utilizar já no próximo mês</strong>.</p>
+    <blockquote class="pull">Lembre-se: pequenas mudanças, quando se tornam hábitos, podem transformar a nossa relação com o dinheiro.</blockquote>
+    <p>Hoje, começa a dar um passo importante para deixar de andar sempre a correr atrás das contas e passar a decidir, com mais consciência e tranquilidade, como quer utilizar o seu dinheiro.</p>
+    <div class="go">
+      <p class="go-q">Vamos a isso?</p>
+      <a class="go-btn" href="#m5-start">Sim, vamos!</a>
+    </div>
+    <hr class="sep">
+  </div>
+  <p>Com todas as contas escritas num só sítio, com o dia e o valor, deixa de se esquecer de pagar e de pagar multas por atraso.</p>
+  <div class="goal"><strong>Objetivo:</strong> no fim deste módulo, tem a sua planilha preenchida com as contas do próximo mês.</div>
+
+  <h3 id="m5-start">5.1 O calendário das contas</h3>
+  <p>Cada conta tem um dia para ser paga. Algumas pagam-se sozinhas (débito direto). Outras precisam que vá ao Multibanco, ao MB WAY ou ao banco.</p>
+  <ul>
+    <li><strong>Débito direto:</strong> o banco paga sozinho. Confirme que há dinheiro na conta antes desse dia.</li>
+    <li><strong>Referência Multibanco:</strong> vem na fatura (entidade, referência e valor). Tem uma data limite.</li>
+    <li><strong>Pague as contas logo depois de receber o salário.</strong> Assim o dinheiro não se gasta noutras coisas.</li>
+    <li><strong>Guarde as faturas</strong> (em papel ou no e-mail) durante pelo menos um ano.</li>
+  </ul>
+
+  <h3>5.2 A planilha «Contas do mês»</h3>
+  <p>Há dois ficheiros: um com o exemplo do João, para ver como fica, e outro em branco, para si. Abre no Excel, no Google Sheets (gratuito) ou numa app de folhas de cálculo no telemóvel.</p>
+  <div class="files">
+    <a class="file" href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,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" download="Contas_do_mes_EXEMPLO.xlsx">
+      <span class="ic">XLSX</span><span><b>Exemplo do João</b><span>Para ver como fica preenchida</span></span>
+    </a>
+    <a class="file" href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,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" download="Contas_do_mes_EM_BRANCO.xlsx">
+      <span class="ic">XLSX</span><span><b>Planilha em branco</b><span>Para as suas contas</span></span>
+    </a>
+  </div>
+  <p class="key">Regra de ouro: <strong>escreva só nas células amarelas.</strong> As outras fazem as contas sozinhas.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Separador</th><th>Para que serve</th><th>Módulo</th></tr></thead>
+    <tbody>
+      <tr><td>Como usar</td><td>Instruções curtas</td><td>—</td></tr>
+      <tr><td>Resumo do mês</td><td>O que entra, o que sai e quanto sobra</td><td>1 e 2</td></tr>
+      <tr><td>Contas a pagar</td><td>Lista das contas, com dia, valor e se já está paga</td><td>2 e 5</td></tr>
+      <tr><td>Compras planeadas</td><td>Quanto guardar por mês para uma compra maior</td><td>3</td></tr>
+      <tr><td>Pequenos gastos</td><td>Os gastos pequenos de uma semana, por mês e por ano</td><td>4</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>5.3 Passo a passo</h3>
+  <ol>
+    <li>Abra o ficheiro em branco e guarde uma cópia com o nome do mês (por exemplo, «Contas novembro»).</li>
+    <li>No <strong>Resumo do mês</strong>, escreva o mês e o dinheiro que entra (salário líquido, subsídio de alimentação, outros).</li>
+    <li>Em <strong>Contas a pagar</strong>, escreva uma conta por linha: nome, tipo, dia de pagar e valor previsto. Escolha o tipo e a forma de pagamento na lista que aparece na célula.</li>
+    <li>Não se esqueça da poupança e da parte guardada para as despesas «de vez em quando».</li>
+    <li>Volte ao <strong>Resumo do mês</strong> e veja a <strong>sobra prevista</strong>. Se ficar cor de laranja, as contas são maiores do que o que entra: corte numa despesa variável.</li>
+    <li>Ao longo do mês, quando pagar uma conta, mude <strong>Pago?</strong> para <strong>Sim</strong> e escreva o valor pago. A linha fica verde.</li>
+    <li>No fim do mês, veja se ficou alguma linha cor de laranja.</li>
+  </ol>
+  <p>No exemplo do João, as contas somam 910 €, já pagou 555 €, faltam 355 € em 4 contas e sobram 52 €.</p>
+
+  <div class="ex-title"><h3 style="margin:0">Exercícios do Módulo 5</h3></div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 5.1</h4>
+    <p>Abra o ficheiro do exemplo do João. Mude a conta da <strong>Luz</strong> para <strong>Sim</strong> e escreva 45 € em «Valor pago».</p>
+    <div class="q"><label for="e51a">Quanto falta pagar agora, no Resumo do mês? (€)</label><input type="text" id="e51a" inputmode="decimal" data-ans="310"><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>Falta pagar 310 € (era 355 €, menos 45 €). Ficam 3 contas por pagar.</div></details>
+  </div>
+
+  <div class="ex" data-ex>
+    <h4>Exercício 5.2</h4>
+    <p>Uma fatura da água diz: «Data limite de pagamento: 22 de novembro». O salário entra no dia 25.</p>
+    <div class="q"><label for="e52a">O que deve fazer?</label><select id="e52a" data-ans="antes"><option value="">Escolha</option><option value="depois">Pagar no dia 25, quando o salário entrar</option><option value="antes">Pagar antes do dia 22, com o dinheiro guardado do mês anterior</option><option value="nada">Esperar pela fatura do mês seguinte</option></select><span class="fb"></span></div>
+    <div class="row"><button type="button" data-check>Verificar</button></div>
+    <details class="sol"><summary>Ver solução</summary><div>Pagar antes do dia 22, com o dinheiro do mês anterior que deve ter ficado guardado. Para a próxima, guarde o valor da água quando o salário entrar. Pagar fora do prazo pode trazer juros e custos.</div></details>
+  </div>
+
+  <div class="ex mine">
+    <h4>Exercício 5.3 — Exercício final</h4>
+    <p>Preencha a planilha em branco com as suas contas do próximo mês. Depois responda aqui:</p>
+    <div class="calc">
+      <label for="f1">1. Quanto entra? (€)<input type="text" id="f1" inputmode="decimal"></label>
+      <label for="f2">2. Quanto somam as contas? (€)<input type="text" id="f2" inputmode="decimal"></label>
+    </div>
+    <div class="result" id="f-res">3. Sobra: 0,00 €</div>
+    <label for="f4" style="display:block;margin-top:12px">4. Uma decisão para o próximo mês</label>
+    <textarea id="f4" placeholder="ex.: vou guardar 20 € no dia em que recebo"></textarea>
+  </div>
+
+  <div class="done-row"><button class="done-btn" data-done="m5" aria-pressed="false">Terminei este módulo</button></div>
+</section>
+
+<!-- MÓDULO FINAL -->
+<section class="mod gated" id="fim">
+  <div class="banner"><div><div class="modhead"><span class="modnum">Módulo final</span><span class="time">15 min</span></div><h2>Missão: chegar ao fim do mês com dinheiro na carteira! 😄</h2></div><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Chávena de café, moedas e estrelas de festa"><g stroke="#1d3a34" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<path d="M60 22c-6 8 6 12 0 20M80 18c-6 8 6 12 0 20M100 22c-6 8 6 12 0 20" fill="none"/>
+<path d="M36 56h92v52a30 30 0 0 1-30 30h-32a30 30 0 0 1-30-30z" fill="#fff"/>
+<path d="M128 70h10a18 18 0 0 1 0 36h-12" fill="none" stroke-width="6"/>
+<path d="M40 70h84" stroke="#a46a3a" stroke-width="8"/>
+<path d="M58 96c6 10 34 10 40 0" fill="none"/><circle cx="64" cy="86" r="3" fill="#1d3a34"/><circle cx="92" cy="86" r="3" fill="#1d3a34"/>
+<path d="M22 150h140" stroke-width="4"/>
+<ellipse cx="196" cy="146" rx="20" ry="7" fill="#f2b632"/><ellipse cx="196" cy="137" rx="20" ry="7" fill="#f2b632"/><ellipse cx="196" cy="128" rx="20" ry="7" fill="#f2b632"/><ellipse cx="196" cy="119" rx="20" ry="7" fill="#f2b632"/>
+<path d="M196 30l6 14 15 1-12 9 4 15-13-8-13 8 4-15-12-9 15-1z" fill="#ffd27a"/>
+<path d="M160 70l3 7 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1z" fill="#e8705a"/>
+<circle cx="222" cy="90" r="5" fill="#5bb98c"/><circle cx="150" cy="30" r="4" fill="#8cc6e8"/><circle cx="20" cy="40" r="4" fill="#c9b8ef"/></g></svg></div>
+
+  <p class="big">E pronto! Depois desta formação, já não podemos dizer que o dinheiro desaparece misteriosamente…</p>
+  <p class="joke">Afinal, ele não tem pernas, mas parece ter asas!</p>
+
+  <h3>O que aprendemos</h3>
+  <p>Agora sabemos que cuidar do dinheiro começa por <strong>perceber quanto recebemos</strong>, <strong>organizar as despesas</strong> e <strong>distinguir o que é essencial</strong> daquilo que é apenas uma vontade do momento. Aprendemos a planear as compras, fazer uma lista antes de ir ao supermercado, comparar preços e pensar duas vezes antes de aproveitar aquela promoção imperdível de uma coisa de que nem sequer precisávamos!</p>
+  <p>Também descobrimos que as pequenas despesas contam, que as contas têm datas para pagar e que uma folha de cálculo pode ser uma grande aliada. E, claro, que guardar algum dinheiro para imprevistos é muito melhor do que esperar que os imprevistos tenham pena de nós!</p>
+
+  <div class="relax">
+    <p><strong>Mas atenção:</strong> ninguém precisa de</p>
+    <ul class="nope">
+      <li><span>se tornar contabilista</span></li>
+      <li><span>deixar de tomar café com os amigos</span></li>
+      <li><span>passar a vida a contar tostões</span></li>
+    </ul>
+  </div>
+  <p>O segredo está em encontrar o <strong>equilíbrio</strong> entre:</p>
+  <div class="balance" aria-label="O equilíbrio">
+    <div class="bc b-need">aquilo de que <b>precisamos</b></div><span class="plus" aria-hidden="true">+</span>
+    <div class="bc b-like">aquilo de que <b>gostamos</b></div><span class="plus" aria-hidden="true">+</span>
+    <div class="bc b-pay">aquilo que <b>podemos pagar</b></div>
+  </div>
+
+  <h3>Cinco regras para levar para a vida</h3>
+  <ol class="rules">
+    <li style="--rc:var(--b1)"><span class="rn">1</span><div><b>Conheça os seus rendimentos</b><p>Saiba com quanto dinheiro pode realmente contar.</p></div></li>
+    <li style="--rc:var(--b2)"><span class="rn">2</span><div><b>Planeie as despesas</b><p>Dê um destino ao dinheiro antes de o gastar.</p></div></li>
+    <li style="--rc:var(--b3)"><span class="rn">3</span><div><b>Compre com consciência</b><p>Nem tudo o que está em promoção é uma oportunidade!</p></div></li>
+    <li style="--rc:var(--b4)"><span class="rn">4</span><div><b>Registe os gastos</b><p>Até aquele cafezinho diário conta.</p></div></li>
+    <li style="--rc:var(--b5)"><span class="rn">5</span><div><b>Poupe sempre que possível</b><p>Mesmo pequenas quantias podem fazer a diferença.</p></div></li>
+  </ol>
+
+  <p class="key"><strong>E lembre-se:</strong> não é preciso ganhar o Euromilhões para começar a cuidar bem do dinheiro. É preciso organização, consistência e, sobretudo, não deixar que o cartão bancário tome todas as decisões por nós!</p>
+
+  <blockquote class="pull">O objetivo não é chegar ao fim do mês sem gastar dinheiro. É chegar ao fim do mês sabendo para onde ele foi e sentindo que foi bem utilizado.</blockquote>
+
+  <p>Agora, vamos pôr estes conhecimentos em prática! Que o dinheiro renda mais, as compras por impulso diminuam e o fim do mês deixe de parecer um filme de suspense.</p>
+  <p>Porque a tranquilidade financeira não se constrói de um dia para o outro. Constrói-se com <strong>pequenas escolhas</strong>, <strong>bons hábitos</strong> e <strong>um passo de cada vez</strong>.</p>
+
+  <div class="farewell">
+    <p class="toast">E que nunca nos falte saúde, juízo e algum dinheiro para um cafezinho!</p>
+    <p class="bem">Bem haja!</p>
+    <div class="sign"><span class="sig-name">Lara Pires</span><span class="sig-role">A sua formadora</span></div>
+  </div>
+
+  <div class="done-row"><button class="done-btn" data-done="fim" aria-pressed="false">Terminei o curso</button></div>
+  <p class="congrats" id="congrats" hidden>Parabéns! Concluiu o curso Dinheiro no Dia a Dia.</p>
+</section>
+
+</main>
+
+<footer class="wrap">Dinheiro no Dia a Dia · Curso de educação financeira · Formadora: Lara Pires. As respostas que escreve ficam guardadas só neste computador ou telemóvel.</footer>
+
+<script>
+(function(){
+  var KEY="dinheiro-dia-a-dia-v1", st={};
+  try{st=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){st={};}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+  st.done=st.done||{}; st.f=st.f||{};
+
+  // opções partilhadas
+  var FVO=[["","Escolha"],["F","Fixa"],["V","Variável"],["O","De vez em quando"]];
+  var GAT=[["","Escolha"],["promo","Promoção e pressa"],["caixa","Produtos junto à caixa"],["emocao","Tristeza ou cansaço"],["redes","Redes sociais"]];
+  function fill(sel,opts){opts.forEach(function(o){var op=document.createElement("option");op.value=o[0];op.textContent=o[1];sel.appendChild(op);});}
+  ["e21a","e21b","e21c","e21d","e21e","e21f"].forEach(function(id){fill(document.getElementById(id),FVO);});
+  ["e41a","e41b","e41c"].forEach(function(id){fill(document.getElementById(id),GAT);});
+
+  function num(s){s=String(s||"").replace(/[€\s]/g,"");if(s.indexOf(",")>-1){s=s.replace(/\./g,"").replace(",",".");}var n=parseFloat(s);return isNaN(n)?null:n;}
+  function eur(n){return n.toLocaleString("pt-PT",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";}
+
+  // guardar respostas
+  document.querySelectorAll("input[type=text],select,textarea").forEach(function(el){
+    if(st.f[el.id]!=null) el.value=st.f[el.id];
+    el.addEventListener("input",function(){st.f[el.id]=el.value;save();el.classList.remove("ok","bad");var fb=el.parentNode.querySelector(".fb");if(fb){fb.textContent="";fb.className="fb";}});
+    el.addEventListener("change",function(){st.f[el.id]=el.value;save();});
+  });
+
+  // verificar
+  document.querySelectorAll("[data-check]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var box=btn.closest("[data-ex]");
+      box.querySelectorAll("[data-ans]").forEach(function(el){
+        var ans=el.getAttribute("data-ans"),fb=el.parentNode.querySelector(".fb"),ok;
+        if(el.tagName==="SELECT"){ if(!el.value){fb.textContent="Escolha uma opção";fb.className="fb bad";el.className="bad";return;} ok=el.value===ans; }
+        else { var v=num(el.value); if(v===null){fb.textContent="Escreva um número";fb.className="fb bad";el.className="bad";return;} ok=Math.abs(v-parseFloat(ans))<0.01; }
+        el.className=ok?"ok":"bad"; fb.textContent=ok?"Certo!":"Tente outra vez"; fb.className="fb "+(ok?"ok":"bad");
+      });
+    });
+  });
+
+  // calculadoras
+  function calc1(){var t=(num(c("c-liq").value)||0)+(num(c("c-dias").value)||0)*(num(c("c-sub").value)||0)+(num(c("c-out").value)||0);c("c-res").textContent="Entra na minha conta, por mês: "+eur(t);}
+  function calcF(){var s=(num(c("f1").value)||0)-(num(c("f2").value)||0);c("f-res").textContent="3. Sobra: "+eur(s);c("f-res").style.color=s<0?"var(--bad)":"var(--accent)";}
+  function c(id){return document.getElementById(id);}
+  ["c-liq","c-dias","c-sub","c-out"].forEach(function(id){c(id).addEventListener("input",calc1);});
+  ["f1","f2"].forEach(function(id){c(id).addEventListener("input",calcF);});
+  calc1();calcF();
+
+  // módulos terminados
+  var mods=["intro","inicio","m1","m2","m3","m4","m5","fim"];
+  function render(){
+    var n=0;
+    mods.forEach(function(m){
+      var d=!!st.done[m]; if(d)n++;
+      var a=document.querySelector('nav.mods a[data-mod="'+m+'"]'); if(a)a.classList.toggle("done",d);
+      var b=document.querySelector('[data-done="'+m+'"]');
+      if(b){b.setAttribute("aria-pressed",d?"true":"false");b.textContent=d?"Feito ✓":(m==="fim"?"Terminei o curso":(m==="inicio"?"Terminei esta parte":"Terminei este módulo"));}
+    });
+    c("progress").textContent=n+" de 8 feitos"; c("congrats").hidden=!st.done.fim;
+  }
+  document.querySelectorAll("[data-done]").forEach(function(b){
+    b.addEventListener("click",function(){var m=b.getAttribute("data-done");st.done[m]=!st.done[m];save();render();});
+  });
+  var ab=c("agree-btn");
+  function agreeView(){var on=!!st.agreed;document.body.classList.toggle("agreed",on);ab.setAttribute("aria-pressed",on?"true":"false");ab.textContent=on?"Concordo ✓":"Concordo";c("agree-msg").innerHTML=on?"Obrigado! Continue para <strong>Como estudar</strong>, logo abaixo.":"Se concorda com esta ideia, clique em <strong>Concordo</strong> para avançar e começar o curso.";}
+  ab.addEventListener("click",function(){st.agreed=true;st.done.intro=true;save();agreeView();render();setTimeout(function(){c("inicio").scrollIntoView({behavior:"smooth"});},150);});
+  agreeView();
+  render();
+})();
+</script>
+</body>
+</html>
